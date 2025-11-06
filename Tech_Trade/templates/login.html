@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - TechTrade</title>
+  <style>
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: #ffffff;
+      padding: 60px;
+      width: 450px;
+      border-radius: 20px;
+      margin: 100px auto;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .flex-column > label {
+      color: #151717;
+      font-weight: 600;
+    }
+
+    .inputForm {
+      border: 1.5px solid #ccc;
+      border-radius: 10px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      transition: 0.2s ease-in-out;
+    }
+
+    .input {
+      margin-left: 10px;
+      border: none;
+      width: 90%;
+      height: 100%;
+      background-color: transparent;
+    }
+
+    .input:focus {
+      outline: none;
+    }
+
+    .inputForm:focus-within {
+      border: 1.5px solid #2d79f3;
+    }
+
+    .user-type {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .button-submit {
+      background-color: #000;
+      color: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .button-submit:hover {
+      background-color: #333;
+    }
+
+    .erro {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .p {
+      text-align: center;
+      color: black;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    .span {
+      color: #2d79f3;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <form class="form" action="/login" method="POST">
+    <h2 style="text-align:center;">Entrar na TechTrade</h2>
+
+    <div class="user-type">
+      <label><input type="radio" name="tipo" value="comprador" checked> Comprador</label>
+      <label><input type="radio" name="tipo" value="vendedor"> Vendedor</label>
+    </div>
+
+    <div class="flex-column">
+      <label>Email</label>
+    </div>
+    <div class="inputForm">
+      <input type="text" name="email" class="input" placeholder="Informe o seu e-mail" required>
+    </div>
+
+    <div class="flex-column">
+      <label>Senha</label>
+    </div>
+    <div class="inputForm">
+      <input type="password" name="senha" class="input" placeholder="Digite a sua senha" required>
+    </div>
+
+    {% if erro %}
+      <p class="erro">{{ erro }}</p>
+    {% endif %}
+
+    <button type="submit" class="button-submit">Entrar</button>
+
+    <p class="p">Não tem uma conta? <a href="/cadastro" class="span">Cadastre-se</a></p>
+  </form>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css_tech_trade/style.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Tech Trade</title>
+</head>
+
+<body>
+<!-- Chat integrado -->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/68db273962ed4a194e8eb028/1j6c12f55';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <!-- Logo -->
+    <a href="{{ url_for('home') }}" class="logo">Tech<span>Trade</span></a>
+
+    <!-- Links do menu -->
+    <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}">HOME</a></li>
+        <li><a href="#sobre">SOBRE</a></li>
+        <li><a href="#suporte">SUPORTE</a></li>
+        <li><a href="{{ url_for('produto.login') }}">CADASTRO</a></li>
+    </ul>
+</nav>
+
+<!-- Banner principal -->
+<section class="banner">
+    <h1>Venda seus eletrônicos usados</h1>
+    <a href="#" class="cta">Dinheiro rápido e fácil</a>
+</section>
+
+<!-- Cards -->
+<div class="card-container">
+    <a href="{{ url_for('produto.renderizar_produtos') }}" class="card">
+        <p class="heading">Celulares</p>
+        <p>Powered By</p>
+        <p>Uiverse</p>
+    </a>
+
+    <div class="card">
+        <p class="heading">Computadores</p>
+        <p>Latest tech</p>
+        <p>2025</p>
+    </div>
+
+    <div class="card">
+        <p class="heading">Periféricos</p>
+        <p>Top rated</p>
+        <p>Deals</p>
+    </div>
+</div>
+
+<!-- Segundo banner -->
+<section class="banner2">
+    <h1>Venda seus eletrônicos usados</h1>
+    <a href="#" class="cta">Dinheiro rápido e fácil</a>
+</section>
+
+<!-- Seção Sobre -->
+<main class="sobre-container" id="sobre">
+    <h1 class="titulo-principal">SOBRE A TECHTRADE</h1>
+    <section class="sobre-conteudo">
+        <div class="sobre-texto">
+            <p class="sobre-descricao">
+                TechTrade é um aplicativo para troca e venda de dispositivos eletrônicos usados, onde usuários listam aparelhos, negociam diretamente e avaliam transações.
+            </p>
+            <p class="sobre-descricao">
+                Assim garantindo sua confiança e também transparência.
+            </p>
+            <p class="sobre-descricao">
+                Nossa plataforma conecta pessoas que desejam vender seus dispositivos com compradores interessados em produtos de qualidade por preços acessíveis. Facilitamos todo o processo de negociação, desde o anúncio até a finalização da troca ou venda.
+            </p>
+            <p class="sobre-descricao">
+                Com um sistema de avaliações e reputação, criamos um ambiente seguro onde cada transação contribui para construir a confiança entre nossa comunidade de usuários.
+            </p>
+            <p class="sobre-descricao">
+                Assim garantindo sua confiança e também transparência em cada negócio realizado.
+            </p>
+        </div>
+
+        <div class="sobre-valores">
+            <h2 class="sobre-subtitulo">Nossos Valores</h2>
+            <div class="valores-grid">
+                <div class="valor-card">
+                    <h3 class="valor-titulo">Confiança</h3>
+                    <p class="valor-descricao">Garantimos transações seguras e transparentes entre nossos usuários.</p>
+                </div>
+                <div class="valor-card">
+                    <h3 class="valor-titulo">Transparência</h3>
+                    <p class="valor-descricao">Todas as informações sobre produtos e transações são claras e acessíveis.</p>
+                </div>
+                <div class="valor-card">
+                    <h3 class="valor-titulo">Sustentabilidade</h3>
+                    <p class="valor-descricao">Promovemos a economia circular através da reutilização de dispositivos eletrônicos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
+  

@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Tech Trade - Área do Vendedor</title>
+</head>
+
+<body>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/68db273962ed4a194e8eb028/1j6c12f55';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+    <nav class="navbar">
+        <!-- Logo -->
+        <a href="#" class="logo">Tech<span>Trade</span></a>
+        
+        <!-- Links do menu -->
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="index.html">SOBRE</a></li>
+            <li><a href="">SUPORTE</a></li>
+            <li><a href="login.html">CADASTRO</a></li>
+            <li><a href="#" id="logout">SAIR</a></li>
+        </ul>
+    </nav>
+
+    <!-- Área do Vendedor -->
+    <section class="vendedor-header">
+        <div class="vendedor-info">
+            <div class="vendedor-avatar">
+                <img src="./img/perfil.png" alt="Avatar do Vendedor">
+            </div>
+            <div class="vendedor-detalhes">
+                <h1>Olá, João Silva!</h1>
+                <p>Vendedor desde: Janeiro 2023</p>
+                <div class="vendedor-stats">
+                    <div class="stat">
+                        <span class="stat-number">42</span>
+                        <span class="stat-label">Produtos Ativos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">128</span>
+                        <span class="stat-label">Vendas Realizadas</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">4.8</span>
+                        <span class="stat-label">Avaliação</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard do Vendedor -->
+    <main class="vendedor-dashboard">
+        <!-- Menu Lateral -->
+        <aside class="vendedor-menu">
+            <ul>
+                <li class="active"><a href="#produtos">Meus Produtos</a></li>
+                <li><a href="#vendas">Vendas</a></li>
+                <li><a href="#financeiro">Financeiro</a></li>
+                <li><a href="#estatisticas">Estatísticas</a></li>
+                <li><a href="#configuracoes">Configurações</a></li>
+            </ul>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <section class="vendedor-conteudo">
+            <!-- Seção Meus Produtos -->
+            <div id="produtos" class="conteudo-secao active">
+                <div class="secao-header">
+                    <h2>Meus Produtos</h2>
+                    <button class="btn-adicionar" id="btnAdicionarProduto">+ Adicionar Produto</button>
+                </div>
+
+                <!-- Filtros e Busca -->
+                <div class="produtos-filtros">
+                    <input type="text" placeholder="Buscar produto..." class="busca-input" id="buscarProduto">
+                    <select class="filtro-select" id="filtroStatus">
+                        <option value="todos">Todos os produtos</option>
+                        <option value="ativo">Ativos</option>
+                        <option value="inativo">Inativos</option>
+                        <option value="vendido">Vendidos</option>
+                    </select>
+                </div>
+
+                <!-- Lista de Produtos -->
+                <div class="produtos-lista" id="listaProdutos">
+                    <!-- Produtos serão carregados via JavaScript -->
+                </div>
+
+                <!-- Paginação -->
+                <div class="paginacao">
+                    <div class="paginacao-numeros">
+                        <a href="#" class="paginacao-numero active">1</a>
+                        <a href="#" class="paginacao-numero">2</a>
+                        <a href="#" class="paginacao-numero">3</a>
+                        <span class="paginacao-pontos">...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outras seções permanecem iguais -->
+            <div id="vendas" class="conteudo-secao">
+                <!-- Conteúdo da seção vendas -->
+            </div>
+
+            <div id="financeiro" class="conteudo-secao">
+                <!-- Conteúdo da seção financeiro -->
+            </div>
+
+            <div id="estatisticas" class="conteudo-secao">
+                <!-- Conteúdo da seção estatísticas -->
+            </div>
+
+            <div id="configuracoes" class="conteudo-secao">
+                <!-- Conteúdo da seção configurações -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para Adicionar/Editar Produto -->
+    <div id="modalProduto" class="modal">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <h2 id="modalTitulo">Adicionar Novo Produto</h2>
+                <span class="modal-fechar">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formProduto">
+                    <input type="hidden" id="produtoId">
+                    <div class="form-group">
+                        <label for="produtoNome">Nome do Produto *</label>
+                        <input type="text" id="produtoNome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoCategoria">Categoria *</label>
+                        <select id="produtoCategoria" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="celulares">Celulares</option>
+                            <option value="computadores">Computadores</option>
+                            <option value="perifericos">Periféricos</option>
+                            <option value="tablets">Tablets</option>
+                            <option value="acessorios">Acessórios</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoDescricao">Descrição *</label>
+                        <textarea id="produtoDescricao" required rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoPreco">Preço (R$) *</label>
+                        <input type="number" id="produtoPreco" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoCondicao">Condição *</label>
+                        <select id="produtoCondicao" required>
+                            <option value="">Selecione a condição</option>
+                            <option value="novo">Novo</option>
+                            <option value="seminovo">Seminovo</option>
+                            <option value="usado">Usado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoStatus">Status *</label>
+                        <select id="produtoStatus" required>
+                            <option value="ativo">Ativo</option>
+                            <option value="inativo">Inativo</option>
+                            <option value="vendido">Vendido</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoImagem">Imagem do Produto</label>
+                        <div class="imagem-upload">
+                            <input type="file" id="produtoImagem" accept="image/*" onchange="previewImagem(this)">
+                            <div class="imagem-preview" id="imagemPreview">
+                                <span>Nenhuma imagem selecionada</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-acoes">
+                        <button type="button" class="btn-cancelar">Cancelar</button>
+                        <button type="submit" class="btn-salvar">Salvar Produto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos produtos (simulando um banco de dados)
+        let produtos = [
+            {
+                id: 1,
+                nome: "iPhone 13 Pro Max 256GB",
+                descricao: "Em ótimo estado, com caixa e acessórios originais",
+                preco: 3499.00,
+                categoria: "celulares",
+                condicao: "seminovo",
+                status: "ativo",
+                visualizacoes: 128,
+                imagem: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+            },
+            {
+                id: 2,
+                nome: "MacBook Air M2 256GB",
+                descricao: "Pouco uso",
+                preco: 2200.00,
+                categoria: "computadores",
+                condicao: "seminovo",
+                status: "vendido",
+                visualizacoes: 89,
+                imagem: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+            },
+            {
+                id: 3,
+                nome: "AirPods Pro 2ª Geração",
+                descricao: "Ótimo som, excelente estado",
+                preco: 1250.00,
+                categoria: "acessorios",
+                condicao: "usado",
+                status: "inativo",
+                visualizacoes: 45,
+                imagem: "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+            }
+        ];
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarProdutos();
+            configurarEventListeners();
+        });
+
+        function carregarProdutos() {
+            const lista = document.getElementById('listaProdutos');
+            const filtroStatus = document.getElementById('filtroStatus').value;
+            const busca = document.getElementById('buscarProduto').value.toLowerCase();
+
+            let produtosFiltrados = produtos.filter(produto => {
+                const matchStatus = filtroStatus === 'todos' || produto.status === filtroStatus;
+                const matchBusca = produto.nome.toLowerCase().includes(busca) || 
+                                 produto.descricao.toLowerCase().includes(busca);
+                return matchStatus && matchBusca;
+            });
+
+            if (produtosFiltrados.length === 0) {
+                lista.innerHTML = `
+                    <div class="sem-produtos">
+                        <i class="fas fa-box-open"></i>
+                        <h3>Nenhum produto encontrado</h3>
+                        <p>${busca ? 'Tente buscar com outros termos' : 'Adicione seu primeiro produto!'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            lista.innerHTML = produtosFiltrados.map(produto => `
+                <div class="produto-card" data-id="${produto.id}">
+                    <div class="produto-imagem">
+                        <img src="${produto.imagem}" alt="${produto.nome}">
+                        <span class="produto-status ${produto.status}">${getStatusText(produto.status)}</span>
+                    </div>
+                    <div class="produto-info">
+                        <h3>${produto.nome}</h3>
+                        <p class="produto-descricao">${produto.descricao}</p>
+                        <div class="produto-detalhes">
+                            <span class="produto-preco">R$ ${produto.preco.toFixed(2)}</span>
+                            <span class="produto-visualizacoes">${produto.visualizacoes} visualizações</span>
+                        </div>
+                        <div class="produto-metadata">
+                            <span class="produto-categoria">${getCategoriaText(produto.categoria)}</span>
+                            <span class="produto-condicao">${getCondicaoText(produto.condicao)}</span>
+                        </div>
+                    </div>
+                    <div class="produto-acoes">
+                        <button class="btn-acao editar" onclick="editarProduto(${produto.id})">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        ${produto.status === 'ativo' ? 
+                            `<button class="btn-acao desativar" onclick="alterarStatus(${produto.id}, 'inativo')">
+                                <i class="fas fa-pause"></i> Desativar
+                            </button>` :
+                            `<button class="btn-acao ativar" onclick="alterarStatus(${produto.id}, 'ativo')">
+                                <i class="fas fa-play"></i> Ativar
+                            </button>`
+                        }
+                        <button class="btn-acao excluir" onclick="excluirProduto(${produto.id})">
+                            <i class="fas fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function configurarEventListeners() {
+            // Menu lateral
+            const menuItems = document.querySelectorAll('.vendedor-menu li');
+            const conteudoSecoes = document.querySelectorAll('.conteudo-secao');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    conteudoSecoes.forEach(secao => {
+                        secao.classList.remove('active');
+                    });
+                    
+                    const targetId = this.querySelector('a').getAttribute('href').substring(1);
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+            
+            // Modal
+            const modal = document.getElementById('modalProduto');
+            const btnAdicionar = document.getElementById('btnAdicionarProduto');
+            const spanFechar = document.querySelector('.modal-fechar');
+            const btnCancelar = document.querySelector('.btn-cancelar');
+            
+            btnAdicionar.onclick = function() {
+                abrirModalAdicionar();
+            }
+            
+            spanFechar.onclick = function() {
+                fecharModal();
+            }
+            
+            btnCancelar.onclick = function() {
+                fecharModal();
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    fecharModal();
+                }
+            }
+            
+            // Formulário
+            document.getElementById('formProduto').addEventListener('submit', function(e) {
+                e.preventDefault();
+                salvarProduto();
+            });
+            
+            // Filtros e busca
+            document.getElementById('filtroStatus').addEventListener('change', carregarProdutos);
+            document.getElementById('buscarProduto').addEventListener('input', carregarProdutos);
+            
+            // Logout
+            document.getElementById('logout').addEventListener('click', function(e) {
+                e.preventDefault();
+                if(confirm('Tem certeza que deseja sair?')) {
+                    window.location.href = 'index.html';
+                }
+            });
+        }
+
+        function abrirModalAdicionar() {
+            document.getElementById('modalTitulo').textContent = 'Adicionar Novo Produto';
+            document.getElementById('formProduto').reset();
+            document.getElementById('produtoId').value = '';
+            document.getElementById('imagemPreview').innerHTML = '<span>Nenhuma imagem selecionada</span>';
+            document.getElementById('modalProduto').style.display = 'block';
+        }
+
+        function editarProduto(id) {
+            const produto = produtos.find(p => p.id === id);
+            if (!produto) return;
+            
+            document.getElementById('modalTitulo').textContent = 'Editar Produto';
+            document.getElementById('produtoId').value = produto.id;
+            document.getElementById('produtoNome').value = produto.nome;
+            document.getElementById('produtoDescricao').value = produto.descricao;
+            document.getElementById('produtoPreco').value = produto.preco;
+            document.getElementById('produtoCategoria').value = produto.categoria;
+            document.getElementById('produtoCondicao').value = produto.condicao;
+            document.getElementById('produtoStatus').value = produto.status;
+            
+            // Preview da imagem atual
+            document.getElementById('imagemPreview').innerHTML = `
+                <img src="${produto.imagem}" alt="${produto.nome}">
+                <span>Imagem atual</span>
+            `;
+            
+            document.getElementById('modalProduto').style.display = 'block';
+        }
+
+        function salvarProduto() {
+            const id = document.getElementById('produtoId').value;
+            const nome = document.getElementById('produtoNome').value;
+            const descricao = document.getElementById('produtoDescricao').value;
+            const preco = parseFloat(document.getElementById('produtoPreco').value);
+            const categoria = document.getElementById('produtoCategoria').value;
+            const condicao = document.getElementById('produtoCondicao').value;
+            const status = document.getElementById('produtoStatus').value;
+            
+            if (id) {
+                // Editar produto existente
+                const index = produtos.findIndex(p => p.id === parseInt(id));
+                if (index !== -1) {
+                    produtos[index] = {
+                        ...produtos[index],
+                        nome,
+                        descricao,
+                        preco,
+                        categoria,
+                        condicao,
+                        status
+                    };
+                }
+            } else {
+                // Adicionar novo produto
+                const novoId = Math.max(...produtos.map(p => p.id), 0) + 1;
+                produtos.unshift({
+                    id: novoId,
+                    nome,
+                    descricao,
+                    preco,
+                    categoria,
+                    condicao,
+                    status,
+                    visualizacoes: 0,
+                    imagem: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                });
+            }
+            
+            carregarProdutos();
+            fecharModal();
+            alert('Produto salvo com sucesso!');
+        }
+
+        function alterarStatus(id, novoStatus) {
+            const produto = produtos.find(p => p.id === id);
+            if (produto) {
+                produto.status = novoStatus;
+                carregarProdutos();
+                alert(`Produto ${novoStatus === 'ativo' ? 'ativado' : 'desativado'} com sucesso!`);
+            }
+        }
+
+        function excluirProduto(id) {
+            if (confirm('Tem certeza que deseja excluir este produto?')) {
+                produtos = produtos.filter(p => p.id !== id);
+                carregarProdutos();
+                alert('Produto excluído com sucesso!');
+            }
+        }
+
+        function previewImagem(input) {
+            const preview = document.getElementById('imagemPreview');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview da imagem">
+                        <span>Nova imagem selecionada</span>
+                    `;
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.innerHTML = '<span>Nenhuma imagem selecionada</span>';
+            }
+        }
+
+        function fecharModal() {
+            document.getElementById('modalProduto').style.display = 'none';
+        }
+
+        // Funções auxiliares
+        function getStatusText(status) {
+            const statusMap = {
+                'ativo': 'Ativo',
+                'inativo': 'Inativo',
+                'vendido': 'Vendido'
+            };
+            return statusMap[status] || status;
+        }
+
+        function getCategoriaText(categoria) {
+            const categoriaMap = {
+                'celulares': 'Celulares',
+                'computadores': 'Computadores',
+                'perifericos': 'Periféricos',
+                'tablets': 'Tablets',
+                'acessorios': 'Acessórios'
+            };
+            return categoriaMap[categoria] || categoria;
+        }
+
+        function getCondicaoText(condicao) {
+            const condicaoMap = {
+                'novo': 'Novo',
+                'seminovo': 'Seminovo',
+                'usado': 'Usado'
+            };
+            return condicaoMap[condicao] || condicao;
+        }
+    </script>
+
+    <style>
+        /* Estilos adicionais para melhorar a funcionalidade de edição */
+        
+        .produto-metadata {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .produto-categoria,
+        .produto-condicao {
+            padding: 4px 8px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .sem-produtos {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .sem-produtos i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .sem-produtos h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        
+        .imagem-upload {
+            margin-top: 8px;
+        }
+        
+        .imagem-preview {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .imagem-preview img {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+        
+        .imagem-preview span {
+            display: block;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .btn-acao {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .btn-acao i {
+            font-size: 0.8rem;
+        }
+
+        /* Mantenha todos os outros estilos existentes */
+        /* ... */
+        /* ===========================
+            ESTILOS DA PÁGINA DO VENDEDOR
+            =========================== */
+        
+        /* Header do Vendedor */
+        .vendedor-header {
+            background: linear-gradient(135deg, #5182ff 0%, #7dcdff 100%);
+            color: white;
+            padding: 30px 0;
+        }
+        
+        .vendedor-info {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .vendedor-avatar {
+            margin-right: 20px;
+        }
+        
+        .vendedor-avatar img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+        
+        .vendedor-detalhes h1 {
+            margin: 0 0 5px 0;
+            font-size: 24px;
+        }
+        
+        .vendedor-detalhes p {
+            margin: 0 0 15px 0;
+            opacity: 0.9;
+        }
+        
+        .vendedor-stats {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* Dashboard do Vendedor */
+        .vendedor-dashboard {
+            max-width: 1200px;
+            margin: 30px auto;
+            display: flex;
+            gap: 30px;
+            padding: 0 20px;
+        }
+        
+        /* Menu Lateral */
+        .vendedor-menu {
+            width: 250px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .vendedor-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .vendedor-menu li {
+            margin: 0;
+        }
+        
+        .vendedor-menu li a {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        .vendedor-menu li.active a,
+        .vendedor-menu li a:hover {
+            background-color: #5182ff;
+            color: white;
+        }
+        
+        /* Conteúdo Principal */
+        .vendedor-conteudo {
+            flex: 1;
+        }
+        
+        .conteudo-secao {
+            display: none;
+        }
+        
+        .conteudo-secao.active {
+            display: block;
+        }
+        
+        .secao-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .secao-header h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .btn-adicionar {
+            background: #5182ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-adicionar:hover {
+            background: #3a6de0;
+        }
+        
+        /* Filtros de Produtos */
+        .produtos-filtros {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .busca-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .filtro-select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+        
+        /* Lista de Produtos */
+        .produtos-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .produto-card {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .produto-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .produto-imagem {
+            position: relative;
+            margin-right: 20px;
+        }
+        
+        .produto-imagem img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .produto-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .produto-status.ativo {
+            background: #28a745;
+        }
+        
+        .produto-status.inativo {
+            background: #6c757d;
+        }
+        
+        .produto-status.vendido {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .produto-info {
+            flex: 1;
+        }
+        
+        .produto-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .produto-descricao {
+            margin: 0 0 15px 0;
+            color: #666;
+        }
+        
+        .produto-detalhes {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .produto-preco {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .produto-visualizacoes {
+            color: #666;
+        }
+        
+        .produto-acoes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn-acao {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-acao.editar {
+            border-color: #5182ff;
+            color: #5182ff;
+        }
+        
+        .btn-acao.editar:hover {
+            background: #5182ff;
+            color: white;
+        }
+        
+        .btn-acao.desativar,
+        .btn-acao.excluir {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        
+        .btn-acao.desativar:hover,
+        .btn-acao.excluir:hover {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-acao.ativar,
+        .btn-acao.reativar {
+            border-color: #28a745;
+            color: #28a745;
+        }
+        
+        .btn-acao.ativar:hover,
+        .btn-acao.reativar:hover {
+            background: #28a745;
+            color: white;
+        }
+        
+        /* Vendas */
+        .vendas-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .venda-card {
+            display: flex;
+            justify-content: space-between;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .venda-info h3 {
+            margin: 0 0 10px 0;
+        }
+        
+        .venda-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+        
+        .venda-valor {
+            text-align: right;
+        }
+        
+        .venda-preco {
+            display: block;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .venda-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .venda-status.concluida {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        /* Financeiro */
+        .financeiro-resumo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .financeiro-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .financeiro-card h3 {
+            margin: 0 0 15px 0;
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .financeiro-valor {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .financeiro-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+        
+        .btn-sacar {
+            background: #5182ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-sacar:hover {
+            background: #3a6de0;
+        }
+        
+        .financeiro-transacoes h3 {
+            margin-bottom: 15px;
+        }
+        
+        .transacoes-tabela {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .transacoes-tabela th,
+        .transacoes-tabela td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .transacoes-tabela th {
+            background: #f9f9f9;
+            font-weight: bold;
+        }
+        
+        .status-pago {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .status-processado {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        
+        /* Estatísticas */
+        .estatisticas-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .estatistica-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .estatistica-card h3 {
+            margin: 0 0 15px 0;
+        }
+        
+        .estatistica-grafico {
+            height: 200px;
+            margin-bottom: 15px;
+        }
+        
+        .grafico-placeholder {
+            width: 100%;
+            height: 100%;
+            background: #f9f9f9;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        
+        /* Configurações */
+        .configuracoes-form {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn-salvar {
+            background: #5182ff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-salvar:hover {
+            background: #3a6de0;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-conteudo {
+            background-color: white;
+            margin: 5% auto;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+        }
+        
+        .modal-fechar {
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-acoes {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-cancelar {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .vendedor-dashboard {
+                flex-direction: column;
+            }
+            
+            .vendedor-menu {
+                width: 100%;
+            }
+            
+            .financeiro-resumo,
+            .estatisticas-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .vendedor-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        
+            
+            .vendedor-avatar {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .vendedor-stats {
+                justify-content: center;
+            }
+            
+            .produto-card {
+                flex-direction: column;
+            }
+            
+            .produto-imagem {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .produto-detalhes {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .produto-acoes {
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 15px;
+            }
+            
+            .venda-card {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .venda-valor {
+                text-align: left;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .secao-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .produtos-filtros {
+                flex-direction: column;
+            }
+            
+            .vendedor-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .form-acoes {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+</html>

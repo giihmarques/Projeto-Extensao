@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Tech Trade - Suporte para Vendedores</title>
+</head>
+
+<body>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/68db273962ed4a194e8eb028/1j6c12f55';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+
+    <nav class="navbar">
+        <!-- Logo -->
+        <a href="index.html" class="logo">Tech<span>Trade</span></a>
+
+        <!-- Links do menu -->
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="index.html">SOBRE</a></li>
+            <li><a href="suporte_vendedores.html">SUPORTE</a></li>
+            <li><a href="./login.html">CADASTRO</a></li>
+            <li><a href="#" id="logout">SAIR</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header do Suporte Vendedor -->
+    <section class="vendedor-suporte-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1>Suporte para Vendedores</h1>
+                    <p>Suporte especializado para ajudar você a vender mais e melhor</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="vendasHoje">0</div>
+                        <div class="stat-label">Vendas Hoje</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="ticketsAbertos">0</div>
+                        <div class="stat-label">Tickets Abertos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="produtosAtivos">0</div>
+                        <div class="stat-label">Produtos Ativos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard de Suporte -->
+    <main class="vendedor-suporte-dashboard">
+        <div class="container">
+            <div class="dashboard-grid">
+                <!-- Menu Lateral -->
+                <aside class="vendedor-menu">
+                    <div class="vendedor-info-card">
+                        <div class="vendedor-avatar">
+                            <img src="https://via.placeholder.com/60" alt="Vendedor">
+                        </div>
+                        <div class="vendedor-detalhes">
+                            <h3>João Silva</h3>
+                            <p>Plano: <span class="plano-destaque">Premium</span></p>
+                            <div class="vendedor-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating">4.8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <nav class="menu-navegacao">
+                        <div class="menu-group">
+                            <h4>Suporte Rápido</h4>
+                            <ul>
+                                <li class="active"><a href="#tickets" onclick="mostrarSecao('tickets')">
+                                        <i class="fas fa-ticket-alt"></i>
+                                        Meus Tickets
+                                    </a></li>
+                                <li><a href="#novo-ticket" onclick="mostrarSecao('novo-ticket')">
+                                        <i class="fas fa-plus-circle"></i>
+                                        Novo Ticket
+                                    </a></li>
+                                <li><a href="#urgente" onclick="abrirTicketUrgente()">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        Suporte Urgente
+                                    </a></li>
+                            </ul>
+                        </div>
+
+                        <div class="menu-group">
+                            <h4>Dúvidas Comuns</h4>
+                            <ul>
+                                <li><a href="#comissoes" onclick="mostrarSecao('comissoes')">
+                                        <i class="fas fa-percentage"></i>
+                                        Comissões e Taxas
+                                    </a></li>
+                                <li><a href="#pagamentos" onclick="mostrarSecao('pagamentos')">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        Pagamentos
+                                    </a></li>
+                                <li><a href="#entregas" onclick="mostrarSecao('entregas')">
+                                        <i class="fas fa-shipping-fast"></i>
+                                        Entregas
+                                    </a></li>
+                                <li><a href="#produtos" onclick="mostrarSecao('produtos')">
+                                        <i class="fas fa-box-open"></i>
+                                        Gerenciar Produtos
+                                    </a></li>
+                            </ul>
+                        </div>
+
+                        <div class="menu-group">
+                            <h4>Ferramentas</h4>
+                            <ul>
+                                <li><a href="#relatorios" onclick="mostrarSecao('relatorios')">
+                                        <i class="fas fa-chart-bar"></i>
+                                        Relatórios
+                                    </a></li>
+                                <li><a href="#ferramentas" onclick="mostrarSecao('ferramentas')">
+                                        <i class="fas fa-tools"></i>
+                                        Ferramentas de Venda
+                                    </a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <div class="contato-rapido">
+                        <h4>Contato Imediato</h4>
+                        <div class="contato-botoes">
+                            <button class="btn-contato whatsapp" onclick="abrirWhatsAppVendedor()">
+                                <i class="fab fa-whatsapp"></i>
+                                WhatsApp
+                            </button>
+                            <button class="btn-contato telefone" onclick="ligarSuporteVendedor()">
+                                <i class="fas fa-phone"></i>
+                                Telefone
+                            </button>
+                            <button class="btn-contato email" onclick="abrirEmailVendedor()">
+                                <i class="fas fa-envelope"></i>
+                                E-mail
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Conteúdo Principal -->
+                <section class="vendedor-conteudo">
+                    <!-- Seção Meus Tickets -->
+                    <div id="tickets" class="conteudo-secao active">
+                        <div class="secao-header">
+                            <h2>Meus Tickets de Suporte</h2>
+                            <div class="header-acoes">
+                                <div class="filtros-rapidos">
+                                    <select id="filtroStatus" onchange="filtrarTickets()">
+                                        <option value="todos">Todos os Status</option>
+                                        <option value="aberto">Abertos</option>
+                                        <option value="andamento">Em Andamento</option>
+                                        <option value="resolvido">Resolvidos</option>
+                                    </select>
+                                    <select id="filtroPrioridade" onchange="filtrarTickets()">
+                                        <option value="todos">Todas as Prioridades</option>
+                                        <option value="alta">Alta</option>
+                                        <option value="media">Média</option>
+                                        <option value="baixa">Baixa</option>
+                                    </select>
+                                </div>
+                                <button class="btn-primario" onclick="mostrarSecao('novo-ticket')">
+                                    <i class="fas fa-plus"></i>
+                                    Novo Ticket
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="tickets-lista" id="listaTicketsVendedor">
+                            <!-- Tickets carregados via JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Seção Novo Ticket -->
+                    <div id="novo-ticket" class="conteudo-secao">
+                        <div class="secao-header">
+                            <h2>Abrir Novo Ticket de Suporte</h2>
+                            <button class="btn-voltar" onclick="mostrarSecao('tickets')">
+                                <i class="fas fa-arrow-left"></i>
+                                Voltar
+                            </button>
+                        </div>
+
+                        <div class="ticket-form-container">
+                            <form id="formTicketVendedor" onsubmit="enviarTicketVendedor(event)">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="ticketAssunto">Assunto *</label>
+                                        <input type="text" id="ticketAssunto" required
+                                            placeholder="Ex: Problema com comissão, Dúvida sobre entrega...">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="ticketCategoria">Categoria *</label>
+                                        <select id="ticketCategoria" required onchange="atualizarPrioridade()">
+                                            <option value="">Selecione uma categoria</option>
+                                            <option value="financeiro">Financeiro/Comissões</option>
+                                            <option value="vendas">Vendas e Negociações</option>
+                                            <option value="entregas">Problemas com Entregas</option>
+                                            <option value="produtos">Cadastro de Produtos</option>
+                                            <option value="tecnico">Problemas Técnicos</option>
+                                            <option value="outro">Outro</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="ticketPrioridade">Prioridade</label>
+                                        <select id="ticketPrioridade">
+                                            <option value="baixa">Baixa</option>
+                                            <option value="media" selected>Média</option>
+                                            <option value="alta">Alta</option>
+                                            <option value="urgente">Urgente</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="ticketPedido">Nº do Pedido (se aplicável)</label>
+                                        <input type="text" id="ticketPedido" placeholder="Ex: #PD-2024-001">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ticketMensagem">Descrição Detalhada *</label>
+                                    <textarea id="ticketMensagem" required rows="8"
+                                        placeholder="Descreva seu problema ou dúvida em detalhes. Inclua informações como: valores, datas, números de pedido, etc."></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Anexar Arquivos (opcional)</label>
+                                    <div class="anexo-area">
+                                        <div class="anexo-upload"
+                                            onclick="document.getElementById('fileUpload').click()">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Clique para anexar arquivos</span>
+                                            <input type="file" id="fileUpload" multiple
+                                                onchange="previewAnexosVendedor(this)" style="display: none;">
+                                        </div>
+                                        <div class="anexo-preview" id="anexoPreviewVendedor"></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-acoes">
+                                    <button type="button" class="btn-secundario" onclick="mostrarSecao('tickets')">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" class="btn-primario">
+                                        <i class="fas fa-paper-plane"></i>
+                                        Enviar Ticket
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Seção Comissões e Taxas -->
+                    <div id="comissoes" class="conteudo-secao">
+                        <div class="secao-header">
+                            <h2>Comissões e Taxas</h2>
+                        </div>
+                        <div class="info-cards">
+                            <div class="info-card">
+                                <h3><i class="fas fa-percentage"></i> Tabela de Comissões</h3>
+                                <div class="comissao-tabela">
+                                    <div class="comissao-item">
+                                        <span class="faixa">Até R$ 100</span>
+                                        <span class="comissao">5%</span>
+                                    </div>
+                                    <div class="comissao-item">
+                                        <span class="faixa">R$ 100 - R$ 500</span>
+                                        <span class="comissao">4%</span>
+                                    </div>
+                                    <div class="comissao-item">
+                                        <span class="faixa">R$ 500 - R$ 1.000</span>
+                                        <span class="comissao">3.5%</span>
+                                    </div>
+                                    <div class="comissao-item">
+                                        <span class="faixa">Acima de R$ 1.000</span>
+                                        <span class="comissao">3%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-card">
+                                <h3><i class="fas fa-calculator"></i> Calculadora de Comissões</h3>
+                                <div class="calculadora">
+                                    <input type="number" id="valorVenda" placeholder="Valor da venda (R$)"
+                                        oninput="calcularComissao()">
+                                    <div class="resultado" id="resultadoComissao">
+                                        Informe o valor da venda
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção Ferramentas -->
+                    <div id="ferramentas" class="conteudo-secao">
+                        <div class="secao-header">
+                            <h2>Ferramentas de Venda</h2>
+                        </div>
+                        <div class="ferramentas-grid">
+                            <div class="ferramenta-card" onclick="abrirRelatorios()">
+                                <i class="fas fa-chart-line"></i>
+                                <h3>Análise de Vendas</h3>
+                                <p>Relatórios detalhados do seu desempenho</p>
+                            </div>
+                            <div class="ferramenta-card" onclick="abrirOtimizacao()">
+                                <i class="fas fa-magic"></i>
+                                <h3>Otimizador de Anúncios</h3>
+                                <p>Melhore o desempenho dos seus produtos</p>
+                            </div>
+                            <div class="ferramenta-card" onclick="abrirPromocoes()">
+                                <i class="fas fa-tags"></i>
+                                <h3>Gestor de Promoções</h3>
+                                <p>Crie e gerencie promoções automaticamente</p>
+                            </div>
+                            <div class="ferramenta-card" onclick="abrirEstoque()">
+                                <i class="fas fa-boxes"></i>
+                                <h3>Controle de Estoque</h3>
+                                <p>Gerencie seu inventário de forma inteligente</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Confirmação -->
+    <div id="modalConfirmacaoVendedor" class="modal">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <h2>Ticket Enviado com Sucesso!</h2>
+            </div>
+            <div class="modal-body">
+                <div class="confirmacao-mensagem">
+                    <i class="fas fa-check-circle"></i>
+                    <p>Seu ticket foi enviado para nossa equipe especializada.</p>
+                    <p><strong>Número do Ticket: <span id="numeroTicketVendedor">#TK-V-2024-001</span></strong></p>
+                    <p class="tempo-resposta">Tempo médio de resposta: <strong>2 horas</strong></p>
+                </div>
+                <div class="modal-acoes">
+                    <button class="btn-primario" onclick="fecharModalVendedor()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados do vendedor
+        const vendedorData = {
+            nome: "João Silva",
+            plano: "Premium",
+            rating: 4.8,
+            vendasHoje: 3,
+            produtosAtivos: 42,
+            ticketsAbertos: 2
+        };
+
+        // Tickets do vendedor
+        let ticketsVendedor = [
+            {
+                id: "TK-V-2024-001",
+                assunto: "Problema com cálculo de comissão",
+                categoria: "financeiro",
+                prioridade: "alta",
+                status: "em_andamento",
+                data: "2024-03-15 14:30",
+                ultimaResposta: "2024-03-15 16:45",
+                mensagens: 3
+            },
+            {
+                id: "TK-V-2024-002",
+                assunto: "Dúvida sobre limite de produtos",
+                categoria: "produtos",
+                prioridade: "media",
+                status: "aberto",
+                data: "2024-03-14 09:15",
+                ultimaResposta: "2024-03-14 09:15",
+                mensagens: 1
+            },
+            {
+                id: "TK-V-2024-003",
+                assunto: "Problema com etiqueta de entrega",
+                categoria: "entregas",
+                prioridade: "baixa",
+                status: "resolvido",
+                data: "2024-03-10 11:20",
+                ultimaResposta: "2024-03-12 14:30",
+                mensagens: 5
+            }
+        ];
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function () {
+            carregarDadosVendedor();
+            carregarTicketsVendedor();
+            iniciarChatVendedor();
+        });
+
+        function carregarDadosVendedor() {
+            document.getElementById('vendasHoje').textContent = vendedorData.vendasHoje;
+            document.getElementById('ticketsAbertos').textContent = vendedorData.ticketsAbertos;
+            document.getElementById('produtosAtivos').textContent = vendedorData.produtosAtivos;
+        }
+
+        // Navegação entre seções
+        function mostrarSecao(secaoId) {
+            // Esconder todas as seções
+            document.querySelectorAll('.conteudo-secao').forEach(secao => {
+                secao.classList.remove('active');
+            });
+
+            // Mostrar seção selecionada
+            document.getElementById(secaoId).classList.add('active');
+
+            // Atualizar menu ativo
+            document.querySelectorAll('.menu-navegacao li').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (secaoId !== 'novo-ticket' && secaoId !== 'comissoes' && secaoId !== 'ferramentas') {
+                const itemMenu = document.querySelector(`a[href="#${secaoId}"]`);
+                if (itemMenu) {
+                    itemMenu.parentElement.classList.add('active');
+                }
+            }
+        }
+
+        // Sistema de Tickets do Vendedor
+        function carregarTicketsVendedor() {
+            const lista = document.getElementById('listaTicketsVendedor');
+            if (!lista) return;
+
+            if (ticketsVendedor.length === 0) {
+                lista.innerHTML = `
+                    <div class="sem-tickets">
+                        <i class="fas fa-ticket-alt"></i>
+                        <h3>Nenhum ticket encontrado</h3>
+                        <p>Você ainda não abriu nenhum ticket de suporte</p>
+                        <button class="btn-primario" onclick="mostrarSecao('novo-ticket')">
+                            Abrir Primeiro Ticket
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            lista.innerHTML = ticketsVendedor.map(ticket => `
+                <div class="ticket-item ${ticket.status} ${ticket.prioridade}">
+                    <div class="ticket-info">
+                        <div class="ticket-header">
+                            <span class="ticket-id">${ticket.id}</span>
+                            <div class="ticket-metadata">
+                                <span class="ticket-prioridade ${ticket.prioridade}">
+                                    ${ticket.prioridade.toUpperCase()}
+                                </span>
+                                <span class="ticket-status ${ticket.status}">
+                                    ${getStatusText(ticket.status)}
+                                </span>
+                            </div>
+                        </div>
+                        <h4>${ticket.assunto}</h4>
+                        <div class="ticket-detalhes">
+                            <span><i class="far fa-calendar"></i> ${formatarData(ticket.data)}</span>
+                            <span><i class="fas fa-comments"></i> ${ticket.mensagens} mensagens</span>
+                            <span><i class="fas fa-sync"></i> ${formatarData(ticket.ultimaResposta)}</span>
+                        </div>
+                    </div>
+                    <div class="ticket-acoes">
+                        <button class="btn-acao visualizar" onclick="verTicketVendedor('${ticket.id}')">
+                            <i class="fas fa-eye"></i>
+                            Visualizar
+                        </button>
+                        <button class="btn-acao responder" onclick="responderTicket('${ticket.id}')">
+                            <i class="fas fa-reply"></i>
+                            Responder
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filtrarTickets() {
+            const status = document.getElementById('filtroStatus').value;
+            const prioridade = document.getElementById('filtroPrioridade').value;
+
+            // Implementação simplificada - em produção, faria filtro no array
+            alert(`Filtrando por: Status=${status}, Prioridade=${prioridade}`);
+        }
+
+        function enviarTicketVendedor(event) {
+            event.preventDefault();
+
+            const assunto = document.getElementById('ticketAssunto').value;
+            const categoria = document.getElementById('ticketCategoria').value;
+            const prioridade = document.getElementById('ticketPrioridade').value;
+            const mensagem = document.getElementById('ticketMensagem').value;
+
+            // Gerar ID único para o ticket
+            const ticketId = `TK-V-${new Date().getFullYear()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+
+            // Adicionar aos tickets
+            ticketsVendedor.unshift({
+                id: ticketId,
+                assunto: assunto,
+                categoria: categoria,
+                prioridade: prioridade,
+                status: 'aberto',
+                data: new Date().toLocaleString('pt-BR'),
+                ultimaResposta: new Date().toLocaleString('pt-BR'),
+                mensagens: 1
+            });
+
+            // Mostrar confirmação
+            document.getElementById('numeroTicketVendedor').textContent = ticketId;
+            document.getElementById('modalConfirmacaoVendedor').style.display = 'block';
+
+            // Limpar formulário
+            document.getElementById('formTicketVendedor').reset();
+            document.getElementById('anexoPreviewVendedor').innerHTML = '';
+
+            // Atualizar dados
+            vendedorData.ticketsAbertos++;
+            carregarDadosVendedor();
+            carregarTicketsVendedor();
+        }
+
+        function atualizarPrioridade() {
+            const categoria = document.getElementById('ticketCategoria').value;
+            const prioridadeSelect = document.getElementById('ticketPrioridade');
+
+            // Categorias críticas recebem prioridade alta automaticamente
+            if (categoria === 'financeiro') {
+                prioridadeSelect.value = 'alta';
+            }
+        }
+
+        function abrirTicketUrgente() {
+            mostrarSecao('novo-ticket');
+            document.getElementById('ticketPrioridade').value = 'urgente';
+            document.getElementById('ticketAssunto').focus();
+        }
+
+        // Sistema de Comissões
+        function calcularComissao() {
+            const valor = parseFloat(document.getElementById('valorVenda').value);
+            const resultado = document.getElementById('resultadoComissao');
+
+            if (!valor || valor <= 0) {
+                resultado.innerHTML = 'Informe o valor da venda';
+                return;
+            }
+
+            let comissao;
+            if (valor <= 100) {
+                comissao = valor * 0.05;
+            } else if (valor <= 500) {
+                comissao = valor * 0.04;
+            } else if (valor <= 1000) {
+                comissao = valor * 0.035;
+            } else {
+                comissao = valor * 0.03;
+            }
+
+            const valorLiquido = valor - comissao;
+
+            resultado.innerHTML = `
+                <div class="resultado-item">
+                    <span>Comissão:</span>
+                    <strong>R$ ${comissao.toFixed(2)}</strong>
+                </div>
+                <div class="resultado-item">
+                    <span>Valor Líquido:</span>
+                    <strong>R$ ${valorLiquido.toFixed(2)}</strong>
+                </div>
+            `;
+        }
+
+        // Chat do Vendedor
+        let chatVendedorAberto = false;
+
+        function toggleChatVendedor() {
+            const chatBody = document.getElementById('chatVendedorBody');
+            const chatIcon = document.getElementById('chatVendedorIcon');
+
+            chatVendedorAberto = !chatVendedorAberto;
+            if (chatVendedorAberto) {
+                chatBody.style.display = 'flex';
+                chatIcon.className = 'fas fa-chevron-up';
+            } else {
+                chatBody.style.display = 'none';
+                chatIcon.className = 'fas fa-chevron-down';
+            }
+        }
+
+        function iniciarChatVendedor() {
+            // Simular mensagem inicial do consultor
+            setTimeout(() => {
+                if (!chatVendedorAberto) {
+                    document.getElementById('chatVendedor').classList.add('has-notification');
+                }
+            }, 2000);
+        }
+
+        function enviarMensagemVendedorChat(event) {
+            if (event.key === 'Enter') {
+                enviarMensagemVendedor();
+            }
+        }
+
+        function enviarMensagemVendedor() {
+            const input = document.getElementById('chatVendedorInput');
+            const mensagem = input.value.trim();
+
+            if (mensagem === '') return;
+
+            // Adicionar mensagem do vendedor
+            adicionarMensagemVendedorChat(mensagem, 'vendedor');
+            input.value = '';
+
+            // Simular resposta do consultor
+            setTimeout(() => {
+                const resposta = gerarRespostaConsultor(mensagem);
+                adicionarMensagemVendedorChat(resposta, 'suporte');
+            }, 1500);
+        }
+
+        function adicionarMensagemVendedorChat(texto, tipo) {
+            const chatMensagens = document.getElementById('chatVendedorMensagens');
+            const mensagemDiv = document.createElement('div');
+            mensagemDiv.className = `mensagem ${tipo}`;
+            mensagemDiv.innerHTML = `
+                <div class="mensagem-conteudo">
+                    <p>${texto}</p>
+                    <span class="mensagem-data">Agora</span>
+                </div>
+            `;
+            chatMensagens.appendChild(mensagemDiv);
+            chatMensagens.scrollTop = chatMensagens.scrollHeight;
+
+            // Remover notificação
+            document.getElementById('chatVendedor').classList.remove('has-notification');
+        }
+
+        function gerarRespostaConsultor(mensagem) {
+            const msg = mensagem.toLowerCase();
+
+            if (msg.includes('comissão') || msg.includes('taxa')) {
+                return "Sobre comissões: nossa taxa varia de 3% a 5% dependendo do valor da venda. Posso ajudar com cálculos específicos!";
+            } else if (msg.includes('venda') || msg.includes('vender')) {
+                return "Para melhorar suas vendas, recomendo: otimizar suas fotos, usar descrições detalhadas e manter preços competitivos.";
+            } else if (msg.includes('entrega') || msg.includes('frete')) {
+                return "Sobre entregas: você é responsável pelo envio em até 2 dias úteis. Precisa de ajuda com etiquetas ou rastreio?";
+            } else if (msg.includes('produto') || msg.includes('anúncio')) {
+                return "Para cadastrar produtos: vá em 'Minha Loja' > 'Adicionar Produto'. Limite atual: 50 produtos ativos.";
+            } else {
+                return "Obrigado pela mensagem! Como seu consultor de vendas, posso ajudar com estratégias, comissões ou problemas técnicos.";
+            }
+        }
+
+        // Contato Rápido
+        function abrirWhatsAppVendedor() {
+            const numero = "5511999999999";
+            const mensagem = "Olá! Sou vendedor na TechTrade e preciso de suporte especializado.";
+            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, '_blank');
+        }
+
+        function ligarSuporteVendedor() {
+            if (confirm('Ligar para o suporte de vendedores?\n(11) 9999-8888')) {
+                window.location.href = 'tel:+551199998888';
+            }
+        }
+
+        function abrirEmailVendedor() {
+            const email = "vendedores@techtrade.com";
+            const assunto = "Suporte Vendedor TechTrade";
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(assunto)}`;
+        }
+
+        // Anexos
+        function previewAnexosVendedor(input) {
+            const preview = document.getElementById('anexoPreviewVendedor');
+            preview.innerHTML = '';
+
+            Array.from(input.files).forEach(file => {
+                const div = document.createElement('div');
+                div.className = 'anexo-item';
+                div.innerHTML = `
+                    <i class="fas fa-file"></i>
+                    <span>${file.name}</span>
+                    <button onclick="removerAnexoVendedor(this)"><i class="fas fa-times"></i></button>
+                `;
+                preview.appendChild(div);
+            });
+        }
+
+        function removerAnexoVendedor(botao) {
+            botao.parentElement.remove();
+        }
+
+        // Ferramentas
+        function abrirRelatorios() {
+            alert('Abrindo relatórios de vendas...');
+        }
+
+        function abrirOtimizacao() {
+            alert('Abrindo otimizador de anúncios...');
+        }
+
+        function abrirPromocoes() {
+            alert('Abrindo gestor de promoções...');
+        }
+
+        function abrirEstoque() {
+            alert('Abrindo controle de estoque...');
+        }
+
+        // Utilitários
+        function getStatusText(status) {
+            const statusMap = {
+                'aberto': 'Aberto',
+                'em_andamento': 'Em Andamento',
+                'resolvido': 'Resolvido'
+            };
+            return statusMap[status] || status;
+        }
+
+        function formatarData(dataString) {
+            return new Date(dataString).toLocaleDateString('pt-BR');
+        }
+
+        function verTicketVendedor(ticketId) {
+            alert(`Visualizando ticket: ${ticketId}\n\nEsta funcionalidade abriria os detalhes completos do ticket.`);
+        }
+
+        function responderTicket(ticketId) {
+            alert(`Respondendo ao ticket: ${ticketId}\n\nEsta funcionalidade abriria a tela de resposta do ticket.`);
+        }
+
+        // Modal
+        function fecharModalVendedor() {
+            document.getElementById('modalConfirmacaoVendedor').style.display = 'none';
+            mostrarSecao('tickets');
+        }
+
+        // Fechar modal ao clicar fora
+        window.onclick = function (event) {
+            const modal = document.getElementById('modalConfirmacaoVendedor');
+            if (event.target === modal) {
+                fecharModalVendedor();
+            }
+        }
+    </script>
+
+    <style>
+        /* ===========================
+            ESTILOS DO SUPORTE PARA VENDEDORES
+            =========================== */
+
+        /* Header do Suporte Vendedor */
+        .vendedor-suporte-header {
+            background: linear-gradient(135deg, #2c5aa0 0%, #5182ff 100%);
+            color: white;
+            padding: 40px 0 30px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .header-text h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .header-text p {
+            margin: 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Dashboard */
+        .vendedor-suporte-dashboard {
+            padding: 30px 0;
+            background: #f8f9fa;
+            min-height: calc(100vh - 200px);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        /* Menu Lateral do Vendedor */
+        .vendedor-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .vendedor-info-card {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 25px;
+        }
+
+        .vendedor-avatar img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .vendedor-detalhes h3 {
+            margin: 0 0 8px 0;
+            color: #333;
+        }
+
+        .vendedor-detalhes p {
+            margin: 0 0 10px 0;
+            color: #666;
+        }
+
+        .plano-destaque {
+            background: #ffd700;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .vendedor-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .stars {
+            color: #ffc107;
+        }
+
+        .rating {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .menu-navegacao {
+            margin-bottom: 25px;
+        }
+
+        .menu-group {
+            margin-bottom: 25px;
+        }
+
+        .menu-group h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .menu-group ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-group li {
+            margin-bottom: 5px;
+        }
+
+        .menu-group li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: #555;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .menu-group li.active a,
+        .menu-group li a:hover {
+            background: #5182ff;
+            color: white;
+        }
+
+        .contato-rapido h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .contato-botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-contato {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-contato.whatsapp {
+            background: #25d366;
+            color: white;
+        }
+
+        .btn-contato.telefone {
+            background: #5182ff;
+            color: white;
+        }
+
+        .btn-contato.email {
+            background: #ea4335;
+            color: white;
+        }
+
+        .btn-contato:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Conteúdo Principal */
+        .vendedor-conteudo {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .conteudo-secao {
+            display: none;
+        }
+
+        .conteudo-secao.active {
+            display: block;
+        }
+
+        .secao-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .secao-header h2 {
+            margin: 0;
+            color: #333;
+            font-size: 1.8rem;
+        }
+
+        .header-acoes {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filtros-rapidos {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filtros-rapidos select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .btn-primario {
+            background: #5182ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .btn-primario:hover {
+            background: #3a6de0;
+        }
+
+        .btn-secundario {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secundario:hover {
+            background: #e9ecef;
+        }
+
+        .btn-voltar {
+            background: transparent;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Lista de Tickets */
+        .tickets-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ticket-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .ticket-item:hover {
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .ticket-item.aberto {
+            border-left: 4px solid #5182ff;
+        }
+
+        .ticket-item.em_andamento {
+            border-left: 4px solid #ffc107;
+        }
+
+        .ticket-item.resolvido {
+            border-left: 4px solid #28a745;
+        }
+
+        .ticket-item.alta {
+            background: #fff5f5;
+        }
+
+        .ticket-item.urgente {
+            background: #fff5f5;
+            border-left: 4px solid #dc3545;
+        }
+
+        .ticket-info {
+            flex: 1;
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .ticket-id {
+            font-weight: bold;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .ticket-metadata {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ticket-prioridade,
+        .ticket-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .ticket-prioridade.alta {
+            background: #ffe6e6;
+            color: #dc3545;
+        }
+
+        .ticket-prioridade.media {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .ticket-prioridade.baixa {
+            background: #e6f3ff;
+            color: #5182ff;
+        }
+
+        .ticket-prioridade.urgente {
+            background: #dc3545;
+            color: white;
+        }
+
+        .ticket-status.aberto {
+            background: #e6f3ff;
+            color: #5182ff;
+        }
+
+        .ticket-status.em_andamento {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .ticket-status.resolvido {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .ticket-info h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .ticket-detalhes {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .ticket-detalhes span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ticket-acoes {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-acao {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .btn-acao.visualizar {
+            border-color: #5182ff;
+            color: #5182ff;
+        }
+
+        .btn-acao.visualizar:hover {
+            background: #5182ff;
+            color: white;
+        }
+
+        .btn-acao.responder {
+            border-color: #28a745;
+            color: #28a745;
+        }
+
+        .btn-acao.responder:hover {
+            background: #28a745;
+            color: white;
+        }
+
+        .sem-tickets {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .sem-tickets i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .sem-tickets h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        /* Formulário de Ticket */
+        .ticket-form-container {
+            max-width: 800px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #5182ff;
+        }
+
+        .anexo-area {
+            margin-top: 8px;
+        }
+
+        .anexo-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .anexo-upload:hover {
+            border-color: #5182ff;
+            background: #f8f9fa;
+        }
+
+        .anexo-upload i {
+            font-size: 2rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .anexo-preview {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .anexo-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .anexo-item button {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .form-acoes {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        /* Seção Comissões */
+        .info-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .info-card h3 {
+            margin: 0 0 20px 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comissao-tabela {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .comissao-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comissao-item:last-child {
+            border-bottom: none;
+        }
+
+        .faixa {
+            color: #666;
+        }
+
+        .comissao {
+            font-weight: bold;
+            color: #5182ff;
+        }
+
+        .calculadora input {
+            margin-bottom: 15px;
+        }
+
+        .resultado {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .resultado-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .resultado-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Ferramentas */
+        .ferramentas-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .ferramenta-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .ferramenta-card:hover {
+            transform: translateY(-5px);
+            border-color: #5182ff;
+            box-shadow: 0 5px 15px rgba(81, 130, 255, 0.2);
+        }
+
+        .ferramenta-card i {
+            font-size: 2.5rem;
+            color: #5182ff;
+            margin-bottom: 15px;
+        }
+
+        .ferramenta-card h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .ferramenta-card p {
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Chat do Vendedor */
+        .chat-vendedor {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .chat-vendedor.has-notification::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 8px;
+            height: 8px;
+            background: #dc3545;
+            border-radius: 50%;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #2c5aa0 0%, #5182ff 100%);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .chat-info i {
+            color: #ffd700;
+        }
+
+        .chat-body {
+            display: none;
+            flex-direction: column;
+            height: 450px;
+        }
+
+        .chat-mensagens {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 350px;
+        }
+
+        .mensagem {
+            display: flex;
+            max-width: 85%;
+        }
+
+        .mensagem.vendedor {
+            align-self: flex-end;
+        }
+
+        .mensagem.suporte {
+            align-self: flex-start;
+        }
+
+        .mensagem-conteudo {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .mensagem.vendedor .mensagem-conteudo {
+            background: #5182ff;
+            color: white;
+        }
+
+        .mensagem-conteudo p {
+            margin: 0 0 5px 0;
+            line-height: 1.4;
+        }
+
+        .mensagem-data {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #eee;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: #5182ff;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .chat-input button:hover {
+            background: #3a6de0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-conteudo {
+            background-color: white;
+            margin: 10% auto;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 25px 30px 0 30px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .modal-body {
+            padding: 20px 30px 30px 30px;
+        }
+
+        .confirmacao-mensagem {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .confirmacao-mensagem i {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
+        .confirmacao-mensagem p {
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .tempo-resposta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .modal-acoes {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 280px 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-stats {
+                justify-content: center;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vendedor-menu {
+                position: static;
+                margin-bottom: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .ferramentas-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ticket-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .ticket-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .ticket-metadata {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .ticket-detalhes {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .ticket-acoes {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .chat-vendedor {
+                width: calc(100% - 40px);
+                right: 20px;
+                bottom: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .vendedor-suporte-header {
+                padding: 30px 0;
+            }
+
+            .header-text h1 {
+                font-size: 2rem;
+            }
+
+            .header-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .vendedor-conteudo {
+                padding: 20px;
+            }
+
+            .secao-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .header-acoes {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .filtros-rapidos {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .form-acoes {
+                flex-direction: column;
+            }
+
+            .modal-conteudo {
+                width: 95%;
+                margin: 5% auto;
+            }
+        }
+    </style>
+</body>
+
+</html>

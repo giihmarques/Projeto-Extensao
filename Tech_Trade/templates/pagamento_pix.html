@@ -1,0 +1,169 @@
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamrento Via Pix</title>
+    </head>
+      <style>
+                /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 8px;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header.seller {
+            background: var(--seller);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+      </style>
+      
+      <body>
+  <!-- Payment Modal -->
+    <div class="modal" id="payment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Finalizar Compra</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Selecione o Método de Pagamento</h3>
+                <div class="payment-methods">
+                    <div class="payment-method" data-method="credit">
+                        <div class="payment-icon">💳</div>
+                        <div>Cartão de Crédito</div>
+                    </div>
+                    <div class="payment-method" data-method="debit">
+                        <div class="payment-icon">💳</div>
+                        <div>Cartão de Débito</div>
+                    </div>
+                    <div class="payment-method" data-method="pix">
+                        <div class="payment-icon">📱</div>
+                        <div>PIX</div>
+                    </div>
+                    <div class="payment-method" data-method="boleto">
+                        <div class="payment-icon">📄</div>
+                        <div>Boleto</div>
+                    </div>
+                </div>
+                
+                <!-- Credit Card Form -->
+                <div class="payment-form" id="credit-form">
+                    <div class="form-group">
+                        <label for="card-number">Número do Cartão</label>
+                        <input type="text" id="card-number" placeholder="1234 5678 9012 3456">
+                    </div>
+                    <div class="form-group">
+                        <label for="card-name">Nome no Cartão</label>
+                        <input type="text" id="card-name" placeholder="João da Silva">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="card-expiry">Validade</label>
+                            <input type="text" id="card-expiry" placeholder="MM/AA">
+                        </div>
+                        <div class="form-group">
+                            <label for="card-cvv">CVV</label>
+                            <input type="text" id="card-cvv" placeholder="123">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="card-installments">Parcelas</label>
+                        <select id="card-installments">
+                            <option>1x de R$ 0,00 sem juros</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Debit Card Form -->
+                <div class="payment-form" id="debit-form">
+                    <div class="form-group">
+                        <label for="debit-card-number">Número do Cartão</label>
+                        <input type="text" id="debit-card-number" placeholder="1234 5678 9012 3456">
+                    </div>
+                    <div class="form-group">
+                        <label for="debit-card-name">Nome no Cartão</label>
+                        <input type="text" id="debit-card-name" placeholder="João da Silva">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="debit-card-expiry">Validade</label>
+                            <input type="text" id="debit-card-expiry" placeholder="MM/AA">
+                        </div>
+                        <div class="form-group">
+                            <label for="debit-card-cvv">CVV</label>
+                            <input type="text" id="debit-card-cvv" placeholder="123">
+                        </div>
+                    </div>
+                </div>
+
+                                <!-- PIX Form -->
+                                <div class="payment-form" id="pix-form">
+                                    <p>Para finalizar sua compra com PIX, clique no botão abaixo para gerar o QR Code.</p>
+                                    <div style="text-align: center; margin: 1.5rem 0;">
+                                        <div style="width: 200px; height: 200px; background: #f0f0f0; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                                            [QR Code]
+                                        </div>
+                                    </div>
+                                    <p style="text-align: center; font-weight: bold;">Ou copie o código PIX:</p>
+                                    <div style="background: #f0f0f0; padding: 0.8rem; border-radius: 4px; text-align: center; margin: 1rem 0; word-break: break-all;">
+                                        00020126580014br.gov.bcb.pix0136aae4e5a-8a1d-4e3a-9c1d-7b8f9a2b3c4d520400005303986540510.005802BR5913TECHTRADE LTDA6008BRASILIA62070503***6304E2CA
+                                    </div>
+                                </div>
+                                
+                                <!-- Boleto Form -->
+                                <div class="payment-form" id="boleto-form">
+                                    <p>Para finalizar sua compra com boleto, clique no botão abaixo para gerar o boleto.</p>
+                                    <p style="margin: 1rem 0;">O boleto terá validade de 3 dias úteis.</p>
+                                    <button class="btn" style="width: 100%;" id="generate-boleto">Gerar Boleto</button>
+                                </div>
+                                
+                                <button class="checkout-btn" id="confirm-payment" style="display: none;">Confirmar Pagamento</button>
+                            </div>
+                        </div>
+                    </div>
+  
+
+    
+   </body>
+   </html>
+   
+ 
