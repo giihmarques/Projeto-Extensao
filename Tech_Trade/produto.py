@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 rotas_produto = Blueprint('produto', __name__)
 
 # ------------------- RENDERIZAÇÃO DE PÁGINAS -------------------
+#---- teste de comentario
 
 @rotas_produto.route('/login', methods=['GET', 'POST'])
 def login():
