@@ -1,86 +1,303 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Finalizar Compra - TechTrade</title>
+{% extends "index.html" %}
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css_tech_trade/style.css') }}">
-</head>
-<body class="bg-light">
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-      <a href="/" class="navbar-brand fw-bold">TechTrade</a>
-    </div>
-  </nav>
+{% block title %}Checkout - {{ produto.nome }}{% endblock %}
 
-  <main class="container my-5">
-    <div class="row g-4">
-      <div class="col-md-5">
-        <div class="card shadow-sm">
-          <img src="{{ produto.imagem }}" class="card-img-top rounded" alt="{{ produto.nome }}">
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Produto e Forma de Pagamento -->
+        <div class="col-lg-8">
+            <!-- Informações do Produto -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Checkout</h4>
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <img src="{{ produto.imagem }}" class="img-fluid rounded shadow" alt="{{ produto.nome }}" style="max-height: 200px; object-fit: cover;">
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="text-primary">{{ produto.nome }}</h5>
+                            <p class="text-muted mb-2">{{ produto.descricao }}</p>
+                            <p class="mb-1"><strong>Vendedor:</strong> {{ produto.vendedor }}</p>
+                            <p class="mb-2"><strong>Preço:</strong> <span class="text-success fw-bold">R$ {{ "%.2f"|format(produto.preco) }}</span></p>
+                            {% if produto.verificado %}
+                            <span class="badge bg-success">
+                                <i class="fas fa-check-circle"></i> Produto Verificado
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informações de Entrega -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Informações de Entrega</h5>
+                    <div class="mb-3">
+                        <label for="endereco" class="form-label">Endereço de Entrega</label>
+                        <textarea class="form-control" id="endereco" name="endereco" rows="3" placeholder="Digite seu endereço completo para entrega..." required></textarea>
+                        <div class="form-text">Inclua rua, número, bairro, cidade e CEP</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="observacoes" class="form-label">Observações (Opcional)</label>
+                        <textarea class="form-control" id="observacoes" name="observacoes" rows="2" placeholder="Alguma observação especial para a entrega..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formas de Pagamento -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Forma de Pagamento</h5>
+                    <form id="formCheckout">
+                        <div class="mb-3">
+                            <div class="form-check border rounded p-3 mb-2">
+                                <input class="form-check-input" type="radio" name="metodo" id="pix" value="PIX" checked>
+                                <label class="form-check-label fw-bold" for="pix">
+                                    <i class="fas fa-qrcode text-primary"></i> PIX
+                                </label>
+                                <small class="text-muted d-block mt-1">Pagamento instantâneo com 10% de desconto</small>
+                            </div>
+                            
+                            <div class="form-check border rounded p-3 mb-2">
+                                <input class="form-check-input" type="radio" name="metodo" id="cartao" value="Cartão de Crédito">
+                                <label class="form-check-label fw-bold" for="cartao">
+                                    <i class="fas fa-credit-card text-info"></i> Cartão de Crédito
+                                </label>
+                                <small class="text-muted d-block mt-1">Em até 12x sem juros</small>
+                            </div>
+                            
+                            <div class="form-check border rounded p-3">
+                                <input class="form-check-input" type="radio" name="metodo" id="boleto" value="Boleto">
+                                <label class="form-check-label fw-bold" for="boleto">
+                                    <i class="fas fa-barcode text-success"></i> Boleto Bancário
+                                </label>
+                                <small class="text-muted d-block mt-1">Pagamento em 1-2 dias úteis</small>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success btn-lg w-100 py-3" id="btnFinalizar">
+                            <i class="fas fa-shopping-bag"></i> Finalizar Compra
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="col-md-7">
-        <h2 class="fw-bold">{{ produto.nome }}</h2>
-        <p class="text-muted">{{ produto.descricao }}</p>
+        <!-- Resumo do Pedido -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-body">
+                    <h5 class="card-title border-bottom pb-3">Resumo do Pedido</h5>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Produto:</span>
+                        <span>R$ {{ "%.2f"|format(produto.preco) }}</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Frete:</span>
+                        <span class="text-success">Grátis</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Desconto:</span>
+                        <span class="text-success">- R$ 0,00</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total:</span>
+                        <span class="text-primary">R$ {{ "%.2f"|format(produto.preco) }}</span>
+                    </div>
+                    
+                    <div class="mt-3 text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-lock"></i> Compra 100% segura
+                        </small>
+                    </div>
+                </div>
+            </div>
 
-        <h3 class="text-success fw-bold mb-3">R$ {{ "%.2f"|format(produto.preco) }}</h3>
-
-        {% if produto.verificado %}
-        <span class="badge bg-success mb-3">✅ Produto verificado pela TechTrade</span>
-        {% endif %}
-
-        <p><strong>Vendedor:</strong> {{ produto.vendedor }}</p>
-
-        <hr>
-
-        <form method="POST" id="form-checkout">
-          <h5>Escolha uma forma de pagamento:</h5>
-          <div class="d-flex flex-column gap-2 mt-2">
-            <button type="button" class="btn btn-outline-primary metodo-pagamento" data-metodo="Cartão de Crédito">💳 Cartão de Crédito</button>
-            <button type="button" class="btn btn-outline-success metodo-pagamento" data-metodo="Pix">💰 Pix</button>
-            <button type="button" class="btn btn-outline-secondary metodo-pagamento" data-metodo="Boleto Bancário">🏦 Boleto Bancário</button>
-          </div>
-
-          <input type="hidden" name="metodo" id="metodo">
-          <input type="hidden" name="id_produto" value="{{ produto.id_produto }}">
-
-          <hr>
-
-          <button type="submit" id="btn-concluir" class="btn btn-lg btn-success mt-3 w-100">
-            Concluir Compra
-          </button>
-        </form>
-      </div>
+            <!-- Informações de Segurança -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body text-center">
+                    <h6 class="card-title">TechTrade</h6>
+                    <div class="row small text-muted">
+                        <div class="col-6 mb-2">
+                            <a href="#" class="text-decoration-none text-muted">Links Rápidos</a>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <a href="#" class="text-decoration-none text-muted">Para Vendedores</a>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <a href="#" class="text-decoration-none text-muted">Contato</a>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <a href="#" class="text-decoration-none text-muted">Suporte</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </main>
+</div>
 
-  <script>
-    // Seleciona o método de pagamento
-    const botoes = document.querySelectorAll(".metodo-pagamento");
-    const inputMetodo = document.getElementById("metodo");
+<style>
+.form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
+.form-check {
+    transition: all 0.3s ease;
+}
+.form-check:hover {
+    background-color: #f8f9fa;
+}
+.card {
+    border: none;
+    border-radius: 12px;
+}
+.btn-success {
+    background: linear-gradient(135deg, #198754, #157347);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+.btn-success:hover {
+    background: linear-gradient(135deg, #157347, #0f5132);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+}
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+</style>
 
-    botoes.forEach(btn => {
-      btn.addEventListener("click", () => {
-        // Limpa seleção anterior
-        botoes.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        // Define o valor escolhido
-        inputMetodo.value = btn.dataset.metodo;
-      });
+<script>
+document.getElementById('formCheckout').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const btnFinalizar = document.getElementById('btnFinalizar');
+    const metodoSelecionado = document.querySelector('input[name="metodo"]:checked');
+    
+    if (!metodoSelecionado) {
+        alert('Por favor, selecione uma forma de pagamento.');
+        return;
+    }
+    
+    const endereco = document.getElementById('endereco').value.trim();
+    if (!endereco) {
+        alert('Por favor, informe o endereço de entrega.');
+        document.getElementById('endereco').focus();
+        return;
+    }
+    
+    const metodo = metodoSelecionado.value;
+    const observacoes = document.getElementById('observacoes').value.trim();
+    
+    // Mostrar loading
+    btnFinalizar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+    btnFinalizar.classList.add('loading');
+    
+    const dadosCompra = {
+        id_produto: {{ produto.id_produto }},
+        metodo_pagamento: metodo,
+        endereco_entrega: endereco,
+        observacoes: observacoes
+    };
+    
+    console.log('Enviando compra:', dadosCompra);
+    
+    // Enviar para a rota completa que registra no BD e notifica vendedor
+    fetch('/techtrade/produtos/finalizar_compra_completa', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dadosCompra)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro na resposta do servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Resposta recebida:', data);
+        
+        if (data.mensagem) {
+            // Compra realizada com sucesso - redirecionar para confirmação
+            const params = new URLSearchParams({
+                produto: data.id_produto,
+                metodo: data.metodo_pagamento,
+                nome: data.nome_produto,
+                preco: data.preco,
+                vendedor: data.vendedor
+            });
+            
+            window.location.href = `/confirmacao?${params.toString()}`;
+        } else {
+            throw new Error(data.erro || 'Erro desconhecido');
+        }
+    })
+    .catch(error => {
+        console.error('Erro completo:', error);
+        
+        // Restaurar botão
+        btnFinalizar.innerHTML = '<i class="fas fa-shopping-bag"></i> Finalizar Compra';
+        btnFinalizar.classList.remove('loading');
+        
+        // Mostrar erro específico
+        if (error.message.includes('Estoque insuficiente')) {
+            alert('❌ Desculpe, este produto está fora de estoque no momento.');
+        } else if (error.message.includes('não logado')) {
+            alert('❌ Você precisa estar logado para finalizar a compra.');
+            window.location.href = '/login';
+        } else if (error.message.includes('Produto não encontrado')) {
+            alert('❌ Produto não encontrado.');
+        } else {
+            alert('❌ Erro ao finalizar compra: ' + error.message);
+        }
     });
+});
 
-    // Verifica se o usuário escolheu o método antes de enviar
-    document.getElementById("form-checkout").addEventListener("submit", (e) => {
-      if (!inputMetodo.value) {
-        e.preventDefault();
-        alert("Por favor, selecione um método de pagamento antes de continuar.");
-      }
-    });
-  </script>
-</body>
-</html>
+// Validação em tempo real
+document.getElementById('endereco').addEventListener('input', function() {
+    const endereco = this.value.trim();
+    const btnFinalizar = document.getElementById('btnFinalizar');
+    
+    if (endereco.length > 10) {
+        this.classList.remove('is-invalid');
+        this.classList.add('is-valid');
+    } else {
+        this.classList.remove('is-valid');
+        this.classList.add('is-invalid');
+    }
+});
+
+// Preencher endereço automaticamente se possível (exemplo)
+function preencherEnderecoExemplo() {
+    const enderecoExemplo = "Rua Exemplo, 123 - Centro\nSão Paulo - SP\nCEP: 01234-567";
+    document.getElementById('endereco').value = enderecoExemplo;
+    
+    // Disparar evento de input para validação
+    document.getElementById('endereco').dispatchEvent(new Event('input'));
+}
+
+// Opcional: Botão para preencher endereço de exemplo (apenas para teste)
+// Descomente se quiser adicionar um botão de exemplo
+/*
+const cardEndereco = document.querySelector('.card-body:has(#endereco)');
+const btnExemplo = document.createElement('button');
+btnExemplo.type = 'button';
+btnExemplo.className = 'btn btn-outline-secondary btn-sm mt-2';
+btnExemplo.innerHTML = '<i class="fas fa-magic"></i> Preencher exemplo';
+btnExemplo.onclick = preencherEnderecoExemplo;
+cardEndereco.appendChild(btnExemplo);
+*/
+</script>
+{% endblock %}

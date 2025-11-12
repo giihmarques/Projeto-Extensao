@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compras dos Clientes - TechTrade</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #08005b;
+            --light-bg: #f8f9fa;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: 600;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-entregue {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-pendente {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-processando {
+            background-color: #cce7ff;
+            color: #004085;
+        }
+        
+        .status-confirmado {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-enviado {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .compra-item {
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .cliente-info {
+            background-color: #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .produto-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .search-box {
+            border-radius: 25px;
+            padding: 10px 20px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .filter-btn {
+            border-radius: 25px;
+            padding: 10px 20px;
+        }
+        
+        footer {
+            background-color: #08005b;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .debug-info {
+            font-size: 0.8rem;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('produto.area_vendedor') }}">
+                <i class="fas fa-store me-2"></i>
+                TechTrade - Compras dos Clientes
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('produto.area_vendedor') }}">
+                    <i class="fas fa-arrow-left me-1"></i> Voltar à Área do Vendedor
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="fw-bold">Compras dos Clientes</h2>
+                <p class="text-muted">Acompanhe todas as vendas dos seus produtos</p>
+                
+                <!-- Debug Info -->
+                <div class="debug-info">
+                    <strong>Vendedor:</strong> {{ vendedor_nome }} | 
+                    <strong>Compras encontradas:</strong> {{ compras|length }}
+                    {% if compras %}
+                    | <strong>IDs:</strong> 
+                    {% for compra in compras %}
+                        #{{ compra.id_compra }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros e Busca -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input type="text" class="form-control search-box" placeholder="Buscar por cliente, produto ou pedido..." id="campoBusca">
+                    <button class="btn btn-primary filter-btn" onclick="filtrarCompras()">
+                        <i class="fas fa-search me-1"></i> Buscar
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select filter-btn" id="filtroStatus" onchange="filtrarCompras()">
+                    <option value="">Todos os status</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="processando">Processando</option>
+                    <option value="enviado">Enviado</option>
+                    <option value="entregue">Entregue</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Lista de Compras -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-shopping-bag me-2"></i> Compras Recebidas</span>
+                        <span class="badge bg-light text-dark" id="totalCompras">{{ compras|length }} compras</span>
+                    </div>
+                    <div class="card-body" id="listaCompras">
+                        {% if compras %}
+                            {% for compra in compras %}
+                            <div class="compra-item" data-status="{{ compra.status }}" data-search="{{ compra.cliente_nome.lower() }} {{ compra.produto_nome.lower() }} {{ compra.id_compra }}">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5>Pedido #{{ compra.id_compra }}</h5>
+                                    <span class="status-badge status-{{ compra.status }}">{{ compra.status|title }}</span>
+                                </div>
+                                
+                                <div class="cliente-info">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <strong><i class="fas fa-user me-2"></i>Cliente:</strong> {{ compra.cliente_nome }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong><i class="fas fa-phone me-2"></i>Telefone:</strong> {{ compra.cliente_telefone }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong><i class="fas fa-envelope me-2"></i>Email:</strong> {{ compra.cliente_email }}
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <strong><i class="fas fa-map-marker-alt me-2"></i>Endereço:</strong> 
+                                            {{ compra.endereco_entrega }}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mt-3 align-items-center">
+                                    <div class="col-md-1">
+                                        <img src="{{ compra.produto_imagem }}" class="produto-img" alt="{{ compra.produto_nome }}" onerror="this.src='/static/tech_trade_imagens/default.jpg'">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <strong>Produto:</strong> {{ compra.produto_nome }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <strong>Quantidade:</strong> {{ compra.quantidade }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <strong>Valor Unitário:</strong> R$ {{ "%.2f"|format(compra.preco_unitario) }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <strong>Total:</strong> <span class="text-success fw-bold">R$ {{ "%.2f"|format(compra.total) }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <strong>Data da Compra:</strong> {{ compra.data_compra }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Método de Pagamento:</strong> {{ compra.metodo_pagamento }}
+                                    </div>
+                                </div>
+
+                                {% if compra.observacoes and compra.observacoes != 'Nenhuma observação' %}
+                                <div class="row mt-2">
+                                    <div class="col-md-12">
+                                        <strong>Observações:</strong> <em>{{ compra.observacoes }}</em>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="mt-3">
+                                    <button class="btn btn-sm btn-outline-primary me-2" onclick="atualizarStatus({{ compra.id_compra }}, 'processando')">
+                                        <i class="fas fa-cog me-1"></i> Processar
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-warning me-2" onclick="atualizarStatus({{ compra.id_compra }}, 'enviado')">
+                                        <i class="fas fa-shipping-fast me-1"></i> Enviar
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success me-2" onclick="atualizarStatus({{ compra.id_compra }}, 'entregue')">
+                                        <i class="fas fa-check me-1"></i> Entregue
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="verDetalhes({{ compra.id_compra }})">
+                                        <i class="fas fa-eye me-1"></i> Detalhes
+                                    </button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-shopping-cart"></i>
+                                <h4>Nenhuma compra recebida ainda</h4>
+                                <p class="text-muted">Quando clientes comprarem seus produtos, eles aparecerão aqui.</p>
+                                <a href="{{ url_for('produto.area_vendedor') }}" class="btn btn-primary mt-3">
+                                    <i class="fas fa-store me-1"></i> Ver Meus Produtos
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>TechTrade</h5>
+                    <p>Plataforma de compra e venda de produtos tecnológicos</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2024 TechTrade. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Filtrar compras
+        function filtrarCompras() {
+            const busca = document.getElementById('campoBusca').value.toLowerCase();
+            const status = document.getElementById('filtroStatus').value;
+            const compras = document.querySelectorAll('.compra-item');
+            let totalVisiveis = 0;
+
+            compras.forEach(compra => {
+                const textoBusca = compra.getAttribute('data-search');
+                const compraStatus = compra.getAttribute('data-status');
+                
+                const matchBusca = textoBusca.includes(busca);
+                const matchStatus = !status || compraStatus === status;
+                
+                if (matchBusca && matchStatus) {
+                    compra.style.display = 'block';
+                    totalVisiveis++;
+                } else {
+                    compra.style.display = 'none';
+                }
+            });
+
+            document.getElementById('totalCompras').textContent = totalVisiveis + ' compras';
+        }
+
+        // Atualizar status da compra
+        function atualizarStatus(idCompra, novoStatus) {
+            if (!confirm(`Deseja realmente alterar o status do pedido #${idCompra} para "${novoStatus}"?`)) {
+                return;
+            }
+
+            fetch(`/api/compras/${idCompra}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: novoStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.mensagem) {
+                    alert(data.mensagem);
+                    location.reload();
+                } else {
+                    alert('Erro ao atualizar status: ' + data.erro);
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao atualizar status');
+            });
+        }
+
+        // Ver detalhes da compra
+        function verDetalhes(idCompra) {
+            alert(`Detalhes do pedido #${idCompra}\n\nEsta funcionalidade está em desenvolvimento. Em breve você poderá ver mais detalhes sobre esta compra.`);
+        }
+
+        // Buscar automaticamente ao digitar
+        document.getElementById('campoBusca').addEventListener('input', filtrarCompras);
+
+        // Inicializar filtros
+        document.addEventListener('DOMContentLoaded', function() {
+            filtrarCompras();
+        });
+    </script>
+</body>
+</html>

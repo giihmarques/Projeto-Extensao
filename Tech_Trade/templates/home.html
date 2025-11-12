@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Tech Trade - Marketplace de Eletrônicos</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        <!-- Logo -->
+        <a href="#" class="logo">Tech<span>Trade</span></a>
+
+        <!-- Links do menu -->
+        <ul class="nav-links">
+            <li><a href="#" class="active">HOME</a></li>
+            <li><a href="#sobre">SOBRE</a></li>
+            <li><a href="#">SUPORTE COMPRADOR</a></li>
+            <li><a href="#">SUPORTE VENDEDOR</a></li>
+           <li><a href="{{ url_for('produto.login') }}" class="btn-login">LOGIN CLIENTE</a></li>
+           <li><a href="{{ url_for('produto.login_vendedor') }}" class="btn-login">LOGIN VENDEDOR</a></li>
+        </ul>
+
+        <!-- Menu Mobile -->
+        <div class="menu-mobile" id="menuMobile">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">A Melhor Plataforma para Comprar e Vender Eletrônicos</h1>
+                <p class="hero-subtitle">Conectamos compradores e vendedores em um marketplace seguro e confiável. Encontre os melhores produtos ou venda seus eletrônicos usados com facilidade.</p>
+                <div class="hero-actions">
+                    <a href="#produtos" class="btn-primary">Comprar Agora</a>
+                    <a href="#" class="btn-secondary">Começar a Vender</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Produtos Ativos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">5K+</span>
+                        <span class="stat-label">Vendedores Verificados</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">Satisfação dos Usuários</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card card-1">
+                    <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="iPhone">
+                    <div class="card-info">
+                        <h4>iPhone 14 Pro</h4>
+                        <p>R$ 4.299</p>
+                    </div>
+                </div>
+                <div class="floating-card card-2">
+                    <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="MacBook">
+                    <div class="card-info">
+                        <h4>MacBook Pro</h4>
+                        <p>R$ 8.999</p>
+                    </div>
+                </div>
+                <div class="floating-card card-3">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fones">
+                    <div class="card-info">
+                        <h4>Fones Bluetooth</h4>
+                        <p>R$ 299</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-background"></div>
+    </section>
+
+    <!-- Adicione aqui as outras seções (Categorias, Produtos, Como Funciona, etc.) -->
+    <!-- Use o código HTML completo do seu design antigo -->
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
