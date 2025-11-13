@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compras dos Clientes - TechTrade</title>
+    <title>Painel do Vendedor - TechTrade</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #08005b;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
             --light-bg: #f8f9fa;
         }
         
@@ -18,14 +22,16 @@
         }
         
         .navbar {
-            background-color: var(--primary-color);
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .card {
             border: none;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             margin-bottom: 20px;
+            border: 1px solid #e9ecef;
         }
         
         .card-header {
@@ -33,53 +39,61 @@
             color: white;
             border-radius: 10px 10px 0 0 !important;
             font-weight: 600;
+            border: none;
         }
         
         .status-badge {
             padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
-        }
-        
-        .status-entregue {
-            background-color: #d4edda;
-            color: #155724;
         }
         
         .status-pendente {
             background-color: #fff3cd;
             color: #856404;
+            border: 1px solid #ffeaa7;
         }
         
         .status-processando {
             background-color: #cce7ff;
             color: #004085;
+            border: 1px solid #b3d7ff;
+        }
+        
+        .status-entregue {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
         
         .status-confirmado {
             background-color: #d1ecf1;
             color: #0c5460;
-        }
-        
-        .status-enviado {
-            background-color: #e2e3e5;
-            color: #383d41;
+            border: 1px solid #bee5eb;
         }
         
         .compra-item {
             border-left: 4px solid var(--primary-color);
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 15px;
             background-color: white;
             border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .compra-item:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(5px);
         }
         
         .cliente-info {
-            background-color: #e9ecef;
+            background-color: #f8f9fa;
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
+            border: 1px solid #e9ecef;
         }
         
         .produto-img {
@@ -87,55 +101,140 @@
             height: 60px;
             object-fit: cover;
             border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stats-label {
+            color: var(--secondary-color);
+            font-size: 0.85rem;
         }
         
         .search-box {
-            border-radius: 25px;
-            padding: 10px 20px;
-            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(8, 0, 91, 0.25);
         }
         
         .filter-btn {
-            border-radius: 25px;
-            padding: 10px 20px;
+            border-radius: 8px;
+            padding: 10px 15px;
         }
         
-        footer {
-            background-color: #08005b;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #6c757d;
-        }
-        
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-        
-        .debug-info {
+        .btn-status {
+            border-radius: 6px;
+            padding: 6px 12px;
             font-size: 0.8rem;
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
+            margin: 2px;
+            border: 1px solid;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .welcome-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .table th {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+        
+        .table td {
+            vertical-align: middle;
+            border-color: #e9ecef;
+        }
+        
+        .badge-custom {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .last-update {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+        }
+        
+        .action-buttons .btn {
+            margin: 2px;
+        }
+        
+        .alert-custom {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('produto.area_vendedor') }}">
+            <a class="navbar-brand fw-bold" href="{{ url_for('produto.area_vendedor') }}">
                 <i class="fas fa-store me-2"></i>
-                TechTrade - Compras dos Clientes
+                TechTrade - Painel do Vendedor
             </a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="{{ url_for('produto.area_vendedor') }}">
-                    <i class="fas fa-arrow-left me-1"></i> Voltar à Área do Vendedor
+                <div class="nav-item dropdown">
+                    <a class="nav-link position-relative" href="#" id="notificacoesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="contadorNotificacoes">0</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacoesDropdown" id="listaNotificacoes">
+                        <li><h6 class="dropdown-header">Notificações Recentes</h6></li>
+                        <li><a class="dropdown-item text-center" href="#">Carregando...</a></li>
+                    </ul>
+                </div>
+                <span class="nav-link text-light">
+                    <i class="fas fa-user me-1"></i> {{ vendedor_nome }}
+                </span>
+                <a class="nav-link" href="{{ url_for('produto.logout_vendedor') }}">
+                    <i class="fas fa-sign-out-alt me-1"></i> Sair
                 </a>
             </div>
         </div>
@@ -143,43 +242,80 @@
 
     <!-- Conteúdo Principal -->
     <div class="container mt-4">
+        <!-- Cabeçalho e Estatísticas -->
         <div class="row mb-4">
             <div class="col-12">
-                <h2 class="fw-bold">Compras dos Clientes</h2>
-                <p class="text-muted">Acompanhe todas as vendas dos seus produtos</p>
-                
-                <!-- Debug Info -->
-                <div class="debug-info">
-                    <strong>Vendedor:</strong> {{ vendedor_nome }} | 
-                    <strong>Compras encontradas:</strong> {{ compras|length }}
-                    {% if compras %}
-                    | <strong>IDs:</strong> 
-                    {% for compra in compras %}
-                        #{{ compra.id_compra }}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                    {% endif %}
+                <div class="welcome-card">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3 class="fw-bold text-primary mb-2">Bem-vinda, {{ vendedor_nome }}!</h3>
+                            <p class="text-muted mb-0">Acompanhe o desempenho das suas vendas em tempo real</p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="last-update">
+                                <i class="fas fa-sync-alt me-1"></i>
+                                Atualizado: <span id="lastUpdateTime">{{ now.strftime('%d/%m/%Y %H:%M') if now else '' }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Filtros e Busca -->
+        <!-- Cards de Estatísticas Reais -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="stats-number" id="totalVendas">{{ compras|length }}</div>
+                    <div class="stats-label">Total de Vendas</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="stats-number text-warning" id="vendasPendentes">0</div>
+                    <div class="stats-label">Pendentes</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="stats-number text-info" id="vendasProcessando">0</div>
+                    <div class="stats-label">Em Processamento</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="stats-number text-success" id="vendasEntregues">0</div>
+                    <div class="stats-label">Concluídas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros e Controles -->
         <div class="row mb-4">
             <div class="col-md-8">
                 <div class="input-group">
-                    <input type="text" class="form-control search-box" placeholder="Buscar por cliente, produto ou pedido..." id="campoBusca">
-                    <button class="btn btn-primary filter-btn" onclick="filtrarCompras()">
-                        <i class="fas fa-search me-1"></i> Buscar
+                    <span class="input-group-text bg-white">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" class="form-control search-box" placeholder="Buscar por cliente, produto ou número do pedido..." id="campoBusca">
+                    <button class="btn btn-primary" onclick="filtrarCompras()">
+                        <i class="fas fa-filter me-1"></i> Filtrar
                     </button>
                 </div>
             </div>
             <div class="col-md-4">
-                <select class="form-select filter-btn" id="filtroStatus" onchange="filtrarCompras()">
-                    <option value="">Todos os status</option>
-                    <option value="pendente">Pendente</option>
-                    <option value="processando">Processando</option>
-                    <option value="enviado">Enviado</option>
-                    <option value="entregue">Entregue</option>
-                </select>
+                <div class="d-flex gap-2">
+                    <select class="form-select" id="filtroStatus">
+                        <option value="">Todos os status</option>
+                        <option value="pendente">Pendentes</option>
+                        <option value="confirmado">Confirmados</option>
+                        <option value="processando">Processando</option>
+                        <option value="entregue">Entregues</option>
+                    </select>
+                    <button class="btn btn-outline-primary" onclick="location.reload()" title="Atualizar">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -188,96 +324,90 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span><i class="fas fa-shopping-bag me-2"></i> Compras Recebidas</span>
-                        <span class="badge bg-light text-dark" id="totalCompras">{{ compras|length }} compras</span>
+                        <span>
+                            <i class="fas fa-shopping-bag me-2"></i> 
+                            Histórico de Vendas
+                            <span class="badge badge-custom ms-2" id="totalComprasBadge">{{ compras|length }}</span>
+                        </span>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline-secondary" onclick="location.reload()" title="Atualizar">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-body" id="listaCompras">
+                    <div class="card-body p-0">
                         {% if compras %}
-                            {% for compra in compras %}
-                            <div class="compra-item" data-status="{{ compra.status }}" data-search="{{ compra.cliente_nome.lower() }} {{ compra.produto_nome.lower() }} {{ compra.id_compra }}">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5>Pedido #{{ compra.id_compra }}</h5>
-                                    <span class="status-badge status-{{ compra.status }}">{{ compra.status|title }}</span>
-                                </div>
-                                
-                                <div class="cliente-info">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <strong><i class="fas fa-user me-2"></i>Cliente:</strong> {{ compra.cliente_nome }}
-                                        </div>
-                                        <div class="col-md-4">
-                                            <strong><i class="fas fa-phone me-2"></i>Telefone:</strong> {{ compra.cliente_telefone }}
-                                        </div>
-                                        <div class="col-md-4">
-                                            <strong><i class="fas fa-envelope me-2"></i>Email:</strong> {{ compra.cliente_email }}
-                                        </div>
-                                        <div class="col-md-12 mt-2">
-                                            <strong><i class="fas fa-map-marker-alt me-2"></i>Endereço:</strong> 
-                                            {{ compra.endereco_entrega }}
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="row mt-3 align-items-center">
-                                    <div class="col-md-1">
-                                        <img src="{{ compra.produto_imagem }}" class="produto-img" alt="{{ compra.produto_nome }}" onerror="this.src='/static/tech_trade_imagens/default.jpg'">
-                                    </div>
-                                    <div class="col-md-5">
-                                        <strong>Produto:</strong> {{ compra.produto_nome }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        <strong>Quantidade:</strong> {{ compra.quantidade }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        <strong>Valor Unitário:</strong> R$ {{ "%.2f"|format(compra.preco_unitario) }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        <strong>Total:</strong> <span class="text-success fw-bold">R$ {{ "%.2f"|format(compra.total) }}</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="row mt-2">
-                                    <div class="col-md-6">
-                                        <strong>Data da Compra:</strong> {{ compra.data_compra }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        <strong>Método de Pagamento:</strong> {{ compra.metodo_pagamento }}
-                                    </div>
-                                </div>
-
-                                {% if compra.observacoes and compra.observacoes != 'Nenhuma observação' %}
-                                <div class="row mt-2">
-                                    <div class="col-md-12">
-                                        <strong>Observações:</strong> <em>{{ compra.observacoes }}</em>
-                                    </div>
-                                </div>
-                                {% endif %}
-                                
-                                <div class="mt-3">
-                                    <button class="btn btn-sm btn-outline-primary me-2" onclick="atualizarStatus({{ compra.id_compra }}, 'processando')">
-                                        <i class="fas fa-cog me-1"></i> Processar
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-warning me-2" onclick="atualizarStatus({{ compra.id_compra }}, 'enviado')">
-                                        <i class="fas fa-shipping-fast me-1"></i> Enviar
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-success me-2" onclick="atualizarStatus({{ compra.id_compra }}, 'entregue')">
-                                        <i class="fas fa-check me-1"></i> Entregue
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-info" onclick="verDetalhes({{ compra.id_compra }})">
-                                        <i class="fas fa-eye me-1"></i> Detalhes
-                                    </button>
-                                </div>
-                            </div>
-                            {% endfor %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Pedido</th>
+                                        <th>Cliente</th>
+                                        <th>Produto</th>
+                                        <th>Valor</th>
+                                        <th>Data</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelaCompras">
+                                    {% for compra in compras %}
+                                    <tr data-status="{{ compra.status }}" data-search="{{ compra.cliente_nome.lower() }} {{ compra.produto_nome.lower() }} {{ compra.id_compra }}">
+                                        <td>
+                                            <strong>#{{ compra.id_compra }}</strong>
+                                        </td>
+                                        <td>
+                                            <div class="fw-bold">{{ compra.cliente_nome }}</div>
+                                            <small class="text-muted">{{ compra.cliente_email }}</small>
+                                            <br>
+                                            <small class="text-muted">{{ compra.cliente_telefone or 'Telefone não informado' }}</small>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ compra.produto_imagem }}" class="produto-img me-2" alt="{{ compra.produto_nome }}" onerror="this.src='/static/tech_trade_imagens/default.jpg'">
+                                                <div>
+                                                    <div class="fw-bold">{{ compra.produto_nome }}</div>
+                                                    <small class="text-muted">Qtd: {{ compra.quantidade }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="fw-bold text-success">R$ {{ "%.2f"|format(compra.total) }}</div>
+                                            <small class="text-muted">R$ {{ "%.2f"|format(compra.preco_unitario) }}/un</small>
+                                        </td>
+                                        <td>
+                                            <div class="small">{{ compra.data_compra }}</div>
+                                        </td>
+                                        <td>
+                                            <span class="status-badge status-{{ compra.status }}">{{ compra.status|title }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-outline-primary" onclick="verDetalhes({{ compra.id_compra }})" title="Detalhes">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-outline-success" onclick="atualizarStatus({{ compra.id_compra }}, 'confirmado')" title="Confirmar">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button class="btn btn-outline-info" onclick="atualizarStatus({{ compra.id_compra }}, 'processando')" title="Processar">
+                                                    <i class="fas fa-cog"></i>
+                                                </button>
+                                                <button class="btn btn-outline-warning" onclick="atualizarStatus({{ compra.id_compra }}, 'entregue')" title="Entregue">
+                                                    <i class="fas fa-box"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                         {% else %}
-                            <div class="empty-state">
-                                <i class="fas fa-shopping-cart"></i>
-                                <h4>Nenhuma compra recebida ainda</h4>
-                                <p class="text-muted">Quando clientes comprarem seus produtos, eles aparecerão aqui.</p>
-                                <a href="{{ url_for('produto.area_vendedor') }}" class="btn btn-primary mt-3">
-                                    <i class="fas fa-store me-1"></i> Ver Meus Produtos
-                                </a>
-                            </div>
+                        <div class="text-center py-5">
+                            <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+                            <h4 class="text-muted">Nenhuma venda realizada</h4>
+                            <p class="text-muted">As vendas aparecerão aqui automaticamente.</p>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
@@ -285,87 +415,182 @@
         </div>
     </div>
 
-    <!-- Rodapé -->
-    <footer class="text-light py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>TechTrade</h5>
-                    <p>Plataforma de compra e venda de produtos tecnológicos</p>
-                </div>
-                <div class="col-md-6 text-end">
-                    <p>&copy; 2024 TechTrade. Todos os direitos reservados.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Calcular estatísticas reais
+        function calcularEstatisticas() {
+            const compras = document.querySelectorAll('#tabelaCompras tr');
+            let pendentes = 0, processando = 0, entregues = 0;
+            
+            compras.forEach(compra => {
+                const status = compra.getAttribute('data-status');
+                switch(status) {
+                    case 'pendente': pendentes++; break;
+                    case 'processando': processando++; break;
+                    case 'entregue': entregues++; break;
+                    case 'confirmado': processando++; break; // Considera confirmado como processando
+                }
+            });
+            
+            // Atualizar estatísticas com dados reais
+            document.getElementById('vendasPendentes').textContent = pendentes;
+            document.getElementById('vendasProcessando').textContent = processando;
+            document.getElementById('vendasEntregues').textContent = entregues;
+            
+            // Atualizar hora
+            const agora = new Date();
+            document.getElementById('lastUpdateTime').textContent = 
+                agora.toLocaleDateString('pt-BR') + ' ' + 
+                agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+
         // Filtrar compras
         function filtrarCompras() {
             const busca = document.getElementById('campoBusca').value.toLowerCase();
             const status = document.getElementById('filtroStatus').value;
-            const compras = document.querySelectorAll('.compra-item');
+            const linhas = document.querySelectorAll('#tabelaCompras tr');
             let totalVisiveis = 0;
 
-            compras.forEach(compra => {
-                const textoBusca = compra.getAttribute('data-search');
-                const compraStatus = compra.getAttribute('data-status');
+            linhas.forEach(linha => {
+                const textoBusca = linha.getAttribute('data-search');
+                const linhaStatus = linha.getAttribute('data-status');
                 
-                const matchBusca = textoBusca.includes(busca);
-                const matchStatus = !status || compraStatus === status;
+                const matchBusca = !busca || textoBusca.includes(busca);
+                const matchStatus = !status || linhaStatus === status;
                 
                 if (matchBusca && matchStatus) {
-                    compra.style.display = 'block';
+                    linha.style.display = '';
                     totalVisiveis++;
                 } else {
-                    compra.style.display = 'none';
+                    linha.style.display = 'none';
                 }
             });
 
-            document.getElementById('totalCompras').textContent = totalVisiveis + ' compras';
+            document.getElementById('totalComprasBadge').textContent = totalVisiveis;
+            document.getElementById('totalVendas').textContent = totalVisiveis;
         }
 
-        // Atualizar status da compra
+        // Atualizar status
         function atualizarStatus(idCompra, novoStatus) {
-            if (!confirm(`Deseja realmente alterar o status do pedido #${idCompra} para "${novoStatus}"?`)) {
-                return;
-            }
+            if (!confirm(`Confirmar atualização do pedido #${idCompra} para "${novoStatus}"?`)) return;
 
             fetch(`/api/compras/${idCompra}/status`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ status: novoStatus })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.mensagem) {
-                    alert(data.mensagem);
-                    location.reload();
+                    showAlert('success', data.mensagem);
+                    setTimeout(() => location.reload(), 1500);
                 } else {
-                    alert('Erro ao atualizar status: ' + data.erro);
+                    showAlert('error', data.erro);
                 }
             })
             .catch(error => {
                 console.error('Erro:', error);
-                alert('Erro ao atualizar status');
+                showAlert('error', 'Erro ao atualizar status');
             });
         }
 
-        // Ver detalhes da compra
+        // Ver detalhes
         function verDetalhes(idCompra) {
-            alert(`Detalhes do pedido #${idCompra}\n\nEsta funcionalidade está em desenvolvimento. Em breve você poderá ver mais detalhes sobre esta compra.`);
+            // Encontrar a compra específica
+            const compraRow = document.querySelector(`tr[data-search*="${idCompra}"]`);
+            if (compraRow) {
+                const cliente = compraRow.querySelector('td:nth-child(2) .fw-bold').textContent;
+                const produto = compraRow.querySelector('td:nth-child(3) .fw-bold').textContent;
+                const valor = compraRow.querySelector('td:nth-child(4) .fw-bold').textContent;
+                const data = compraRow.querySelector('td:nth-child(5) .small').textContent;
+                const status = compraRow.querySelector('td:nth-child(6) .status-badge').textContent;
+                
+                const detalhes = `
+Detalhes do Pedido #${idCompra}
+
+👤 Cliente: ${cliente}
+📦 Produto: ${produto}
+💰 Valor: ${valor}
+📅 Data: ${data}
+📊 Status: ${status}
+
+Endereço de entrega e observações disponíveis no sistema.
+                `.trim();
+                
+                alert(detalhes);
+            }
         }
 
-        // Buscar automaticamente ao digitar
-        document.getElementById('campoBusca').addEventListener('input', filtrarCompras);
+        // Alert personalizado
+        function showAlert(type, message) {
+            // Remover alertas anteriores
+            const alertasAnteriores = document.querySelectorAll('.alert-custom');
+            alertasAnteriores.forEach(alert => alert.remove());
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'error' ? 'danger' : 'success'} alert-dismissible fade show alert-custom`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            // Auto-remover após 5 segundos
+            setTimeout(() => {
+                if (alertDiv.parentElement) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
 
-        // Inicializar filtros
+        // Carregar notificações
+        function carregarNotificacoes() {
+            fetch('/api/vendedor/notificacoes')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.notificacoes) {
+                        const lista = document.getElementById('listaNotificacoes');
+                        const contador = document.getElementById('contadorNotificacoes');
+                        const naoLidas = data.notificacoes.filter(n => !n.lida).length;
+                        
+                        contador.textContent = naoLidas;
+                        contador.style.display = naoLidas > 0 ? 'flex' : 'none';
+                        
+                        // Atualizar lista
+                        lista.innerHTML = '<li><h6 class="dropdown-header">Notificações Recentes</h6></li>';
+                        
+                        if (data.notificacoes.length === 0) {
+                            lista.innerHTML += '<li><a class="dropdown-item text-center text-muted" href="#">Nenhuma notificação</a></li>';
+                        } else {
+                            data.notificacoes.slice(0, 5).forEach(notif => {
+                                const item = document.createElement('li');
+                                item.innerHTML = `
+                                    <a class="dropdown-item ${notif.lida ? '' : 'fw-bold'}" href="#" onclick="marcarComoLida(${notif.id})">
+                                        <div class="small">${notif.mensagem}</div>
+                                        <div class="text-muted smaller">${notif.data_envio}</div>
+                                    </a>
+                                `;
+                                lista.appendChild(item);
+                            });
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar notificações:', error);
+                });
+        }
+
+        // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
-            filtrarCompras();
+            calcularEstatisticas();
+            carregarNotificacoes();
+            
+            // Event listeners
+            document.getElementById('campoBusca').addEventListener('input', filtrarCompras);
+            document.getElementById('filtroStatus').addEventListener('change', filtrarCompras);
+            
+            // Atualizar notificações a cada 30 segundos
+            setInterval(carregarNotificacoes, 30000);
         });
     </script>
 </body>

@@ -577,7 +577,7 @@ def area_vendedor():
 
 @rotas_produto.route('/vendedor/compras')
 def compras_vendedor():
-    """Página para vendedor visualizar compras dos clientes - ROTA PRINCIPAL"""
+    """Página para vendedor visualizar compras dos clientes - VERSÃO CORRIGIDA"""
     try:
         if not session.get('vendedor_logado'):
             return redirect(url_for('produto.login_vendedor'))
@@ -589,17 +589,32 @@ def compras_vendedor():
         
         conexao = ConexaoBD()
         
-        # CONSULTA CORRIGIDA
-        sql_compras = """
+        # CONSULTA CORRIGIDA - Buscar produtos que pertencem ao vendedor
+        sql_produtos_vendedor = "SELECT id_produto FROM produtos_tt WHERE criado_por_id = %s"
+        produtos_vendedor = conexao.select(sql_produtos_vendedor, (vendedor_id,))
+        
+        if not produtos_vendedor:
+            print("ℹ️ Nenhum produto encontrado para este vendedor")
+            conexao.close()
+            return render_template('compras_vendedor.html', 
+                                 vendedor_nome=vendedor_nome,
+                                 compras=[])
+        
+        # Extrair IDs dos produtos
+        ids_produtos = [str(prod[0]) for prod in produtos_vendedor]
+        placeholders = ','.join(['%s'] * len(ids_produtos))
+        
+        # Buscar compras dos produtos deste vendedor
+        sql_compras = f"""
             SELECT 
                 c.id_compra,
                 c.id_cliente,
-                COALESCE(cli.nome, 'Cliente') as nome_cliente,
-                COALESCE(cli.email, 'Email não informado') as email_cliente,
-                COALESCE(cli.telefone, 'Telefone não informado') as telefone_cliente,
+                COALESCE(cli.nome, 'Cliente') as cliente_nome,
+                COALESCE(cli.email, 'Email não informado') as cliente_email,
+                COALESCE(cli.telefone, 'Telefone não informado') as cliente_telefone,
                 c.id_produto,
-                COALESCE(p.nome, 'Produto') as nome_produto,
-                p.imagem as imagem_produto,
+                COALESCE(p.nome, 'Produto') as produto_nome,
+                p.imagem as produto_imagem,
                 COALESCE(c.quantidade, 1) as quantidade,
                 COALESCE(c.preco_unitario, 0) as preco_unitario,
                 COALESCE(c.total, 0) as total,
@@ -611,17 +626,13 @@ def compras_vendedor():
             FROM compras_tt c
             INNER JOIN produtos_tt p ON c.id_produto = p.id_produto
             LEFT JOIN clientes_tt cli ON c.id_cliente = cli.id_cliente
-            WHERE p.criado_por_id = %s
-            ORDER BY c.id_compra DESC
+            WHERE c.id_produto IN ({placeholders})
+            ORDER BY c.data_compra DESC
         """
         
-        print(f"📋 Executando SQL para vendedor {vendedor_id}")
-        compras = conexao.select(sql_compras, (vendedor_id,))
+        print(f"📋 Executando SQL para {len(ids_produtos)} produtos do vendedor")
+        compras = conexao.select(sql_compras, tuple(ids_produtos))
         print(f"✅ Compras encontradas: {len(compras)}")
-        
-        # DEBUG: Mostrar dados brutos
-        for i, compra in enumerate(compras):
-            print(f"📦 Compra {i+1}: ID {compra[0]} - {compra[6]} - R$ {compra[10]} - Status: {compra[12]}")
         
         conexao.close()
 
@@ -637,6 +648,13 @@ def compras_vendedor():
             else:
                 data_formatada = 'Data não informada'
             
+            # Tratar imagem do produto
+            imagem_produto = compra[7]
+            if imagem_produto and not imagem_produto.startswith('http'):
+                imagem_url = f"/static/tech_trade_imagens/{imagem_produto}"
+            else:
+                imagem_url = imagem_produto or "/static/tech_trade_imagens/default.jpg"
+            
             compra_formatada = {
                 'id_compra': compra[0],
                 'id_cliente': compra[1],
@@ -645,7 +663,7 @@ def compras_vendedor():
                 'cliente_telefone': compra[4],
                 'id_produto': compra[5],
                 'produto_nome': compra[6],
-                'produto_imagem': f"/static/tech_trade_imagens/{compra[7]}" if compra[7] else "/static/tech_trade_imagens/default.jpg",
+                'produto_imagem': imagem_url,
                 'quantidade': compra[8],
                 'preco_unitario': float(compra[9]),
                 'total': float(compra[10]),
@@ -976,7 +994,7 @@ def comprovante_compra(id_produto):
 
 @rotas_produto.route("/techtrade/produtos/finalizar_compra_completa", methods=["POST"])
 def finalizar_compra_completa():
-    """Registra compra, atualiza estoque e notifica vendedor"""
+    """Registra compra, atualiza estoque e notifica vendedor - VERSÃO CORRIGIDA"""
     try:
         if not session.get('usuario_logado'):
             return jsonify({"erro": "Usuário não logado"}), 401
@@ -998,7 +1016,9 @@ def finalizar_compra_completa():
 
         # 1. Buscar informações do produto e vendedor
         sql_produto = """
-            SELECT p.preco, p.estoque, p.criado_por_id, p.nome, v.nome as vendedor_nome, v.email as vendedor_email
+            SELECT p.preco, p.estoque, p.criado_por_id, p.nome, 
+                   COALESCE(v.nome, 'Vendedor TechTrade') as vendedor_nome,
+                   COALESCE(v.email, 'vendedor@techtrade.com') as vendedor_email
             FROM produtos_tt p 
             LEFT JOIN vendedores_tt v ON p.criado_por_id = v.id_vendedor
             WHERE p.id_produto = %s
@@ -1013,8 +1033,8 @@ def finalizar_compra_completa():
         estoque_atual = produto_info[0][1]
         id_vendedor = produto_info[0][2]
         nome_produto = produto_info[0][3]
-        nome_vendedor = produto_info[0][4] or "TechTrade"
-        email_vendedor = produto_info[0][5] or "vendedor@techtrade.com"
+        nome_vendedor = produto_info[0][4]
+        email_vendedor = produto_info[0][5]
         total = preco_unitario * quantidade
 
         # 2. Verificar estoque
@@ -1047,6 +1067,8 @@ def finalizar_compra_completa():
                 VALUES (%s, %s, NOW(), 0)
             """
             conexao.insert(sql_notificacao, (id_vendedor, mensagem_notificacao))
+            
+            print(f"📩 Notificação criada para vendedor {id_vendedor}: {mensagem_notificacao}")
 
         conexao.close()
 
@@ -1059,13 +1081,15 @@ def finalizar_compra_completa():
             "nome_produto": nome_produto,
             "preco": preco_unitario,
             "metodo_pagamento": metodo_pagamento,
-            "vendedor": nome_vendedor
+            "vendedor": nome_vendedor,
+            "notificado": bool(id_vendedor)
         }), 201
 
     except Exception as err:
         print(f"❌ Erro ao registrar compra completa: {err}")
+        import traceback
+        traceback.print_exc()
         return jsonify({"erro": str(err)}), 500
-
 
 @rotas_produto.route("/api/vendedor/notificacoes")
 def get_notificacoes_vendedor():
@@ -1207,3 +1231,43 @@ def criar_tabela_vendas():
         return f"Erro ao criar tabela: {e}"
 
 
+
+
+@rotas_produto.route('/criar_tabelas_notificacoes')
+def criar_tabelas_notificacoes():
+    """Cria as tabelas necessárias para o sistema de notificações"""
+    try:
+        conexao = ConexaoBD()
+        
+        # Criar tabela de notificações
+        sql_notificacoes = """
+            CREATE TABLE IF NOT EXISTS notificacoes_tt (
+                id_notificacao INT AUTO_INCREMENT PRIMARY KEY,
+                id_vendedor INT NOT NULL,
+                mensagem TEXT NOT NULL,
+                data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                lida BOOLEAN DEFAULT FALSE,
+                FOREIGN KEY (id_vendedor) REFERENCES vendedores_tt(id_vendedor)
+            )
+        """
+        conexao.insert(sql_notificacoes)
+        
+        # Verificar se a tabela foi criada
+        sql_verifica = "SHOW TABLES LIKE 'notificacoes_tt'"
+        resultado = conexao.select(sql_verifica)
+        
+        conexao.close()
+        
+        if resultado:
+            return "✅ Tabela de notificações criada/verificada com sucesso! <a href='/vendedor/compras'>Voltar para compras</a>"
+        else:
+            return "❌ Erro ao criar tabela de notificações"
+    
+    except Exception as e:
+        return f"Erro ao criar tabelas: {e}"
+# ------------------- PÁGINA DE SUPORTE DO COMPRADOR -------------------
+
+@rotas_produto.route('/suporte_comprador')
+def suporte_comprador():
+    """Página de suporte e ajuda para compradores"""
+    return render_template('suporte_comprador.html')
